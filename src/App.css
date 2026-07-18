@@ -1,0 +1,272 @@
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    background: linear-gradient(135deg, oklab(0.43 -0.13 0.08), #00a0f0);
+}
+#root {
+    border-inline: 1px solid #5a3524;
+
+    background: linear-gradient(135deg, oklab(0.43 -0.13 0.08), #00a0f0);
+}
+.container {
+    width: 500px;
+    margin: 50px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+}
+
+h1 {
+    text-align: center;
+    font-size: 42px;
+    line-height: 1.3;
+    margin-bottom: 30px;
+}
+
+button {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    font-size: 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #1976d2;
+    color: white;
+}
+
+button:hover {
+    background: #1565c0;
+}
+.btn-xoa {
+    width: 20%;
+    background-color: red;
+    color: white;
+}
+
+.btn-xoa:hover {
+    background-color: darkred;
+}
+.goi-y-tien {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-tien {
+    width: auto;
+    padding: 8px 12px;
+    margin: 0;
+    font-size: 14px;
+    background: #e9ecef;
+    color: #333;
+}
+
+.btn-tien:hover {
+    background: #d5d9dd;
+}
+.ban-hang-layout {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    justify-content: center;
+    width: 1100px;
+    max-width: 95%;
+    margin: 40px auto;
+}
+
+.cot-nhap,
+.cot-don-hang {
+    width: 500px;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-sizing: border-box;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+}
+
+.cot-don-hang {
+    min-height: 400px;
+}
+
+.nut-xoa {
+    width: 50%;
+    background: red;
+    color: white;
+    margin-top: 10px;
+}
+
+.nut-xoa:hover {
+    background: darkred;
+}
+.ban-hang-layout {
+    display: flex;
+    gap: 30px;
+    width: 1200px;
+    max-width: 95%;
+    margin: 40px auto;
+    align-items: flex-start;
+}
+
+.cot-trai {
+    width: 45%;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.cot-phai {
+    width: 55%;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-sizing: border-box;
+    min-height: 500px;
+}
+
+.dong-thuoc {
+    display: grid;
+    grid-template-columns: 1.5fr 0.8fr 1.5fr 1fr 45px;
+    align-items: center;
+    column-gap: 20px;
+    padding: 12px 0;
+    border-bottom: 1px solid #ddd;
+    font-size: 15px;
+    text-align: left;
+}
+
+.tong-tien {
+    margin-top: 25px;
+}
+
+@media (max-width: 800px) {
+    .ban-hang-layout {
+        flex-direction: column;
+    }
+
+    .cot-trai,
+    .cot-phai {
+        width: 100%;
+    }
+}
+.btn-xoa-nho {
+    width: 35px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: red !important;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.bang-kho {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.dong-kho {
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1.5fr;
+    gap: 20px;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    align-items: center;
+}
+
+.tieu-de-kho {
+    font-weight: bold;
+    background: #f5f5f5;
+}
+.input-so-tien {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 16px;
+    margin-top: 12px;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    font-size: 17px;
+    outline: none;
+    background: #fff;
+}
+
+.input-so-tien:focus {
+    border: 2px solid #237bd3;
+}
+.thuong-hieu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px 20px;
+    background: white;
+}
+
+.header-thoi-an {
+    width: 100%;
+    height: 100px;
+    background: #4b2f20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    box-sizing: border-box;
+}
+
+.logo-thoi-an {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+}
+
+.header-text {
+    text-align: center;
+    color: #f7df9b;
+}
+
+.header-text h1 {
+    margin: 0;
+    font-size: 32px;
+    font-weight: bold;
+    color: #f7df9b;
+}
+
+.header-text p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #f7df9b;
+}
+.ten-phong-kham {
+    color: #f7df9b;
+    font-size: 32px;
+    font-weight: bold; /* 👈 Màu chữ ĐÔNG Y THỜI AN */
+    margin: 0;
+}
+
+.thuong-hieu h1 {
+    margin: 0;
+    font-size: 26px;
+}
+
+.thuong-hieu p {
+    margin: 4px 0 0;
+    font-size: 14px;
+}
+.btn-reset {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+}
