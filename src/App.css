@@ -212,7 +212,7 @@ button:hover {
 .header-thoi-an {
     width: 100%;
     height: 100px;
-    background: #4b2f20;
+    background: #1e5b53;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -233,7 +233,7 @@ button:hover {
 
 .header-text h1 {
     margin: 0;
-    font-size: 32px;
+    font-size: 45px;
     font-weight: bold;
     color: #f7df9b;
 }
@@ -269,4 +269,101 @@ button:hover {
     border-radius: 50%;
     font-size: 24px;
     cursor: pointer;
+}
+.lich-su-item {
+    position: relative;
+    padding: 15px 10px;
+}
+
+.btn-in-nho {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+
+    width: 42px;
+    height: 42px;
+    padding: 0;
+
+    border: none;
+    border-radius: 50%;
+    background: #217bd3;
+    color: white;
+
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.btn-in-nho:hover {
+    transform: scale(1.1);
+}
+.btn-phieu-cham-cuu {
+    position: absolute;
+    top: 140px;
+    right: 22%;
+    width: auto;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #217bd3;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+/* //in phiếu châm cứu */
+.toa-thuoc-container {
+    max-width: 850px;
+    margin: 30px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    box-sizing: border-box;
+}
+
+.toa-thuoc-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.toa-thuoc-header h1 {
+    color: #4b2f20;
+}
+
+.toa-thuoc-container h3 {
+    margin-top: 25px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #ccc;
+    color: #4b2f20;
+}
+
+.toa-thuoc-container input,
+.toa-thuoc-container textarea,
+.toa-thuoc-container select {
+    width: 100%;
+    padding: 12px;
+    margin: 6px 0;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.toa-hang-ngang {
+    display: flex;
+    gap: 10px;
+}
+
+.toa-hang-ngang input,
+.toa-hang-ngang select {
+    flex: 1;
+}
+
+.danh-sach-toa {
+    min-height: 100px;
+    margin-top: 15px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.toa-nut-chuc-nang {
+    margin-top: 25px;
 }

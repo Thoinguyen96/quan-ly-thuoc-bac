@@ -55,7 +55,7 @@ function App() {
     const [tonKhoMoi, setTonKhoMoi] = useState("");
     // Dữ liệu ô tìm kiếm
     const [tuKhoa, setTuKhoa] = useState("");
-
+    const [lichSuBanHang, setLichSuBanHang] = useState([]);
     // Hàm bỏ dấu tiếng Việt
     const boDau = (text) => {
         return text
@@ -171,11 +171,39 @@ function App() {
                 danhSachCu.map((thuoc) => (thuoc.id === thuocTrongKho.id ? { ...thuoc, tonKho: tonKhoMoi } : thuoc)),
             );
         }
+        // Lưu lịch sử bán hàng
+        const { error: loiLuuLichSu } = await supabase.from("lich_su_ban_hang").insert([
+            {
+                tong_tien: tongTien,
+                chi_tiet: gioHang,
+            },
+        ]);
 
+        if (loiLuuLichSu) {
+            alert("Lỗi lưu lịch sử bán hàng: " + loiLuuLichSu.message);
+            return;
+        }
         alert(`Thanh toán thành công! Tổng tiền: ${tongTien.toLocaleString("vi-VN")}đ`);
 
         // Xóa đơn sau khi thanh toán
         setGioHang([]);
+    };
+    const taiLichSuBanHang = async () => {
+        const { data, error } = await supabase
+            .from("lich_su_ban_hang")
+            .select("*")
+            .order("created_at", { ascending: false });
+
+        if (error) {
+            alert("Lỗi tải lịch sử: " + error.message);
+            return;
+        }
+
+        setLichSuBanHang(data || []);
+    };
+    const inHoaDon = (don) => {
+        console.log("In hóa đơn:", don);
+        alert(`Chuẩn bị in hóa đơn #${don.id}`);
     };
     // Thêm thuốc mới vào kho
     // Thêm thuốc mới vào kho và lưu lên Supabase
@@ -455,6 +483,14 @@ function App() {
                         <h2 className="tong-tien">Tổng tiền: {tongTien.toLocaleString("vi-VN")}đ</h2>
 
                         <button onClick={thanhToan}>💵 Thanh toán</button>
+                        <button
+                            onClick={async () => {
+                                await taiLichSuBanHang();
+                                setTrang("lichsu");
+                            }}
+                        >
+                            🧾 Xem lịch sử bán hàng
+                        </button>
                     </div>
                 </div>{" "}
             </div>
@@ -522,15 +558,138 @@ function App() {
             </div>
         );
     }
+    // ==========================
+    // TRANG LỊCH SỬ BÁN HÀNG
+    // ==========================
 
+    if (trang === "lichsu") {
+        return (
+            <div>
+                <Header />
+
+                <div className="container">
+                    <h1>🧾 LỊCH SỬ BÁN HÀNG</h1>
+
+                    {lichSuBanHang.length === 0 ? (
+                        <p>Chưa có lịch sử bán hàng.</p>
+                    ) : (
+                        lichSuBanHang.map((don) => (
+                            <div className="lich-su-item" key={don.id}>
+                                <button className="btn-in-nho" onClick={() => inHoaDon(don)} title="In hóa đơn">
+                                    🖨️
+                                </button>
+                                <h3>Hóa đơn #{don.id}</h3>
+
+                                <p>🕒 {new Date(don.created_at).toLocaleString("vi-VN")}</p>
+
+                                {don.chi_tiet?.map((thuoc, index) => (
+                                    <div key={index}>
+                                        <strong>{thuoc.ten}</strong>
+                                        {" — "}
+                                        {thuoc.soLuong}g{" — "}
+                                        {Number(thuoc.thanhTien).toLocaleString("vi-VN")}đ
+                                    </div>
+                                ))}
+
+                                <h3>Tổng tiền: {Number(don.tong_tien).toLocaleString("vi-VN")}đ</h3>
+                                <hr />
+                            </div>
+                        ))
+                    )}
+
+                    <button onClick={() => setTrang("banhang")}>← Quay lại bán hàng</button>
+                </div>
+            </div>
+        );
+    }
+    // ==========================
+    // TRANG TOA THUỐC YHCT
+    // ==========================
+
+    if (trang === "toathuoc") {
+        return (
+            <div>
+                <Header />
+
+                <div className="toa-thuoc-container">
+                    <div className="toa-thuoc-header">
+                        <h1>📄 TOA THUỐC Y HỌC CỔ TRUYỀN</h1>
+                    </div>
+
+                    <h3>THÔNG TIN BỆNH NHÂN</h3>
+
+                    <input type="text" placeholder="Họ và tên bệnh nhân" />
+
+                    <div className="toa-hang-ngang">
+                        <input type="number" placeholder="Năm sinh" />
+
+                        <select>
+                            <option value="">Giới tính</option>
+                            <option value="nam">Nam</option>
+                            <option value="nu">Nữ</option>
+                        </select>
+                    </div>
+
+                    <input type="text" placeholder="Số điện thoại" />
+
+                    <input type="text" placeholder="Địa chỉ" />
+
+                    <h3>THÔNG TIN KHÁM BỆNH</h3>
+
+                    <textarea placeholder="Triệu chứng / Lý do đến khám" rows="3" />
+
+                    <textarea placeholder="Tiền sử bệnh" rows="2" />
+
+                    <textarea placeholder="Chẩn đoán" rows="2" />
+
+                    <textarea placeholder="Chẩn đoán Y học cổ truyền / Thể bệnh" rows="2" />
+
+                    <textarea placeholder="Pháp điều trị" rows="2" />
+
+                    <h3>ĐƠN THUỐC</h3>
+
+                    <div className="toa-hang-ngang">
+                        <input type="text" placeholder="Tên vị thuốc" />
+
+                        <input type="number" placeholder="Số lượng (g)" />
+                    </div>
+
+                    <button>➕ Thêm vị thuốc</button>
+
+                    <div className="danh-sach-toa">
+                        <p>Chưa có vị thuốc nào trong toa.</p>
+                    </div>
+
+                    <h3>CÁCH DÙNG VÀ LỜI DẶN</h3>
+
+                    <textarea placeholder="Cách sắc thuốc / Cách dùng" rows="3" />
+
+                    <textarea placeholder="Lời dặn bệnh nhân" rows="3" />
+
+                    <input type="text" placeholder="Số thang" />
+
+                    <div className="toa-nut-chuc-nang">
+                        <button>💾 Lưu toa</button>
+
+                        <button>🖨️ In toa thuốc</button>
+
+                        <button onClick={() => setTrang("trangchu")}>← Quay lại trang chủ</button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
     // =========================
     // TRANG CHỦ
     // =========================
 
     return (
         <div>
-            <Header />
+            <Header />;
             <div className="container">
+                <button className="btn-phieu-cham-cuu" onClick={() => setTrang("phieuchamcuu")}>
+                    🖨️ Phiếu châm cứu
+                </button>
                 <h1>🏥 QUẢN LÝ THUỐC BẮC</h1>
 
                 <button onClick={() => setTrang("banhang")}>💰 Bán hàng</button>
@@ -538,7 +697,7 @@ function App() {
                 <button onClick={() => setTrang("khothuoc")}>📦 Kho thuốc</button>
                 <button>📥 Nhập hàng</button>
                 <button>👨‍⚕️ Bệnh nhân</button>
-                <button>📄 Toa thuốc</button>
+                <button onClick={() => setTrang("toathuoc")}>📄 Toa thuốc</button>
                 <button>📊 Thống kê</button>
             </div>
         </div>
