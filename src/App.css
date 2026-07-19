@@ -233,13 +233,12 @@ button:hover {
 
 .header-text h1 {
     margin: 0;
-    font-size: 45px;
+    font-size: 20px;
     font-weight: bold;
     color: #f7df9b;
 }
 
 .header-text p {
-    margin: 5px 0 0;
     font-size: 14px;
     color: #f7df9b;
 }
@@ -299,7 +298,7 @@ button:hover {
 .btn-phieu-cham-cuu {
     position: absolute;
     top: 140px;
-    right: 22%;
+    left: calc(50% + 300px);
     width: auto;
     padding: 12px 20px;
     border: none;
@@ -366,4 +365,82 @@ button:hover {
 
 .toa-nut-chuc-nang {
     margin-top: 25px;
+}
+.thong-bao-nho {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    font-size: 16px;
+    z-index: 9999;
+}
+.toa-thuoc-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.toa-thuoc-item button {
+    width: auto;
+    padding: 5px 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+.Toastify__close-button {
+    width: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    position: absolute !important;
+    top: 8px !important;
+    right: 8px !important;
+}
+.nut-quay-lai-nhanh {
+    position: fixed;
+    top: 100px;
+    left: calc(50% + 300px);
+
+    width: 45px !important;
+    height: 45px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+
+    border-radius: 50% !important;
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.nut-dang-xuat {
+    position: fixed;
+    bottom: 0%;
+    left: calc(50% + 300px);
+
+    width: auto !important;
+    padding: 10px 18px !important;
+
+    background: #dc3545 !important;
+    color: white !important;
+
+    border: none !important;
+    border-radius: 8px !important;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.nut-dang-xuat:hover {
+    background: #b02a37 !important;
 }

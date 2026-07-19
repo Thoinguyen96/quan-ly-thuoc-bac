@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import { supabase } from "./supabase";
 import logo from "./assets/Logo.png";
-
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import NutDangXuat from "./components/NutDangXuat";
 function Header() {
     return (
         <div className="header-thoi-an">
@@ -10,7 +12,9 @@ function Header() {
 
             <div className="header-text">
                 <p>PHÒNG CHẨN TRỊ Y HỌC CỔ TRUYỀN</p>
-                <h1>ĐÔNG Y THỜI AN</h1>
+                <h1>AN THỜI ĐƯỜNG</h1>
+
+                <p>Châm cứu – Xoa bóp – Bấm huyệt – Bốc thuốc</p>
             </div>
         </div>
     );
@@ -56,6 +60,25 @@ function App() {
     // Dữ liệu ô tìm kiếm
     const [tuKhoa, setTuKhoa] = useState("");
     const [lichSuBanHang, setLichSuBanHang] = useState([]);
+    const [toaThuoc, setToaThuoc] = useState({
+        ho_ten: "",
+        nam_sinh: "",
+        gioi_tinh: "",
+        so_dien_thoai: "",
+        dia_chi: "",
+        trieu_chung: "",
+        tien_su_benh: "",
+        chan_doan: "",
+        chan_doan_yhct: "",
+        phap_dieu_tri: "",
+        cach_dung: "",
+        loi_dan: "",
+        so_thang: "",
+    });
+
+    const [tenViThuoc, setTenViThuoc] = useState("");
+    const [soLuongViThuoc, setSoLuongViThuoc] = useState("");
+    const [danhSachViThuoc, setDanhSachViThuoc] = useState([]);
     // Hàm bỏ dấu tiếng Việt
     const boDau = (text) => {
         return text
@@ -73,12 +96,12 @@ function App() {
         });
 
         if (error) {
-            alert("Đăng nhập thất bại: " + error.message);
+            toast.error("Đăng nhập thất bại: " + error.message);
             return;
         }
 
         setUser(data.user);
-        alert("Đăng nhập thành công!");
+        toast.success("Đăng nhập thành công!");
     };
     // Lọc thuốc theo từ khóa
     const thuocGoiY = danhSachThuoc.filter((thuoc) => boDau(thuoc.ten).includes(boDau(tuKhoa)));
@@ -99,14 +122,14 @@ function App() {
     // Thêm thuốc vào đơn
     const themVaoDon = () => {
         if (!thuocDangChon) {
-            alert("Vui lòng chọn thuốc!");
+            toast.warning("Vui lòng chọn thuốc!");
             return;
         }
 
         const gram = Number(soLuong);
 
         if (!gram || gram <= 0) {
-            alert("Vui lòng nhập số lượng gram!");
+            toast.warning("Vui lòng nhập số lượng gram!");
             return;
         }
 
@@ -137,7 +160,7 @@ function App() {
     // Thanh toán và trừ tồn kho trên Supabase
     const thanhToan = async () => {
         if (gioHang.length === 0) {
-            alert("Đơn hàng đang trống!");
+            toast.warning("Đơn hàng đang trống!");
             return;
         }
 
@@ -148,12 +171,12 @@ function App() {
             );
 
             if (!thuocTrongKho) {
-                alert(`Không tìm thấy ${item.ten} trong kho!`);
+                toast.warning(`Không tìm thấy ${item.ten} trong kho!`);
                 return;
             }
 
             if (thuocTrongKho.tonKho < item.soLuong) {
-                alert(`${item.ten} không đủ tồn kho! Còn ${thuocTrongKho.tonKho}g`);
+                toast.warning(`${item.ten} không đủ tồn kho! Còn ${thuocTrongKho.tonKho}g`);
                 return;
             }
 
@@ -162,7 +185,7 @@ function App() {
             const { error } = await supabase.from("thuoc").update({ ton_kho: tonKhoMoi }).eq("id", thuocTrongKho.id);
 
             if (error) {
-                alert("Lỗi cập nhật kho: " + error.message);
+                toast.error("Lỗi cập nhật kho: " + error.message);
                 return;
             }
 
@@ -180,10 +203,10 @@ function App() {
         ]);
 
         if (loiLuuLichSu) {
-            alert("Lỗi lưu lịch sử bán hàng: " + loiLuuLichSu.message);
+            toast.error("Lỗi lưu lịch sử bán hàng: " + loiLuuLichSu.message);
             return;
         }
-        alert(`Thanh toán thành công! Tổng tiền: ${tongTien.toLocaleString("vi-VN")}đ`);
+        toast.success(`Thanh toán thành công! Tổng tiền: ${tongTien.toLocaleString("vi-VN")}đ`);
 
         // Xóa đơn sau khi thanh toán
         setGioHang([]);
@@ -195,7 +218,7 @@ function App() {
             .order("created_at", { ascending: false });
 
         if (error) {
-            alert("Lỗi tải lịch sử: " + error.message);
+            toast.error("Lỗi tải lịch sử: " + error.message);
             return;
         }
 
@@ -203,23 +226,23 @@ function App() {
     };
     const inHoaDon = (don) => {
         console.log("In hóa đơn:", don);
-        alert(`Chuẩn bị in hóa đơn #${don.id}`);
+        toast.info(`Chuẩn bị in hóa đơn #${don.id}`);
     };
     // Thêm thuốc mới vào kho
     // Thêm thuốc mới vào kho và lưu lên Supabase
     const themThuocMoi = async () => {
         if (!tenThuocMoi.trim()) {
-            alert("Vui lòng nhập tên thuốc!");
+            toast.warning("Vui lòng nhập tên thuốc!");
             return;
         }
 
         if (!giaThuocMoi || Number(giaThuocMoi) <= 0) {
-            alert("Vui lòng nhập giá thuốc!");
+            toast.warning("Vui lòng nhập giá thuốc!");
             return;
         }
 
         if (tonKhoMoi === "" || Number(tonKhoMoi) < 0) {
-            alert("Vui lòng nhập số lượng tồn kho!");
+            toast.warning("Vui lòng nhập số lượng tồn kho!");
             return;
         }
 
@@ -235,7 +258,7 @@ function App() {
             .select();
 
         if (error) {
-            alert("Lỗi thêm thuốc: " + error.message);
+            toast.error("Lỗi thêm thuốc: " + error.message);
             return;
         }
 
@@ -252,7 +275,7 @@ function App() {
         setGiaThuocMoi("");
         setTonKhoMoi("");
 
-        alert("Đã thêm thuốc và lưu lên server!");
+        toast.success("Đã thêm thuốc và lưu lên server!");
     };
 
     // =========================
@@ -566,7 +589,9 @@ function App() {
         return (
             <div>
                 <Header />
-
+                <button className="nut-quay-lai-nhanh" onClick={() => setTrang("banhang")}>
+                    ←
+                </button>
                 <div className="container">
                     <h1>🧾 LỊCH SỬ BÁN HÀNG</h1>
 
@@ -602,10 +627,43 @@ function App() {
             </div>
         );
     }
+    const themViThuocVaoToa = () => {
+        if (!tenViThuoc.trim() || !soLuongViThuoc) {
+            toast.warning("Vui lòng nhập tên vị thuốc và số lượng!");
+            return;
+        }
+
+        const viThuocMoi = {
+            ten: tenViThuoc,
+            soLuong: Number(soLuongViThuoc),
+        };
+
+        setDanhSachViThuoc([...danhSachViThuoc, viThuocMoi]);
+
+        // Xóa ô nhập sau khi thêm
+        setTenViThuoc("");
+        setSoLuongViThuoc("");
+    };
     // ==========================
     // TRANG TOA THUỐC YHCT
     // ==========================
+    const luuToaThuoc = async () => {
+        const { error } = await supabase.from("toa_thuoc").insert([
+            {
+                ...toaThuoc,
+                nam_sinh: toaThuoc.nam_sinh ? Number(toaThuoc.nam_sinh) : null,
+                so_thang: toaThuoc.so_thang ? Number(toaThuoc.so_thang) : null,
+                danh_sach_thuoc: danhSachViThuoc,
+            },
+        ]);
 
+        if (error) {
+            toast.error("Lỗi lưu toa: " + error.message);
+            return;
+        }
+
+        toast.success("Đã lưu toa thuốc thành công!");
+    };
     if (trang === "toathuoc") {
         return (
             <div>
@@ -649,15 +707,42 @@ function App() {
                     <h3>ĐƠN THUỐC</h3>
 
                     <div className="toa-hang-ngang">
-                        <input type="text" placeholder="Tên vị thuốc" />
+                        <input
+                            type="text"
+                            placeholder="Tên vị thuốc"
+                            value={tenViThuoc}
+                            onChange={(e) => setTenViThuoc(e.target.value)}
+                        />
 
-                        <input type="number" placeholder="Số lượng (g)" />
+                        <input
+                            type="number"
+                            placeholder="Số lượng (g)"
+                            value={soLuongViThuoc}
+                            onChange={(e) => setSoLuongViThuoc(e.target.value)}
+                        />
                     </div>
-
-                    <button>➕ Thêm vị thuốc</button>
+                    <button onClick={themViThuocVaoToa}>➕ Thêm vị thuốc</button>
 
                     <div className="danh-sach-toa">
-                        <p>Chưa có vị thuốc nào trong toa.</p>
+                        {danhSachViThuoc.length === 0 ? (
+                            <p>Chưa có vị thuốc nào trong toa.</p>
+                        ) : (
+                            danhSachViThuoc.map((thuoc, index) => (
+                                <div className="toa-thuoc-item" key={index}>
+                                    <span>
+                                        {index + 1}. <strong>{thuoc.ten}</strong> — {thuoc.soLuong}g
+                                    </span>
+
+                                    <button
+                                        onClick={() =>
+                                            setDanhSachViThuoc(danhSachViThuoc.filter((_, i) => i !== index))
+                                        }
+                                    >
+                                        ❌
+                                    </button>
+                                </div>
+                            ))
+                        )}
                     </div>
 
                     <h3>CÁCH DÙNG VÀ LỜI DẶN</h3>
@@ -669,7 +754,7 @@ function App() {
                     <input type="text" placeholder="Số thang" />
 
                     <div className="toa-nut-chuc-nang">
-                        <button>💾 Lưu toa</button>
+                        <button onClick={luuToaThuoc}>💾 Lưu toa</button>
 
                         <button>🖨️ In toa thuốc</button>
 
@@ -686,10 +771,10 @@ function App() {
     return (
         <div>
             <Header />;
+            <button className="btn-phieu-cham-cuu" onClick={() => setTrang("phieuchamcuu")}>
+                🖨️ Phiếu châm cứu
+            </button>
             <div className="container">
-                <button className="btn-phieu-cham-cuu" onClick={() => setTrang("phieuchamcuu")}>
-                    🖨️ Phiếu châm cứu
-                </button>
                 <h1>🏥 QUẢN LÝ THUỐC BẮC</h1>
 
                 <button onClick={() => setTrang("banhang")}>💰 Bán hàng</button>
@@ -700,6 +785,7 @@ function App() {
                 <button onClick={() => setTrang("toathuoc")}>📄 Toa thuốc</button>
                 <button>📊 Thống kê</button>
             </div>
+            <NutDangXuat setUser={setUser} />
         </div>
     );
 }
