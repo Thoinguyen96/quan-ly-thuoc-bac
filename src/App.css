@@ -986,3 +986,13 @@ button:hover {
         height: 300px;
     }
 }
+/* SỬA FONT HEADER TRÊN ĐIỆN THOẠI THẬT */
+.header-thoi-an,
+.header-text,
+.header-text h1,
+.header-text p {
+    font-family: Arial, "Helvetica Neue", sans-serif !important;
+    letter-spacing: 0 !important;
+    font-variant-ligatures: none;
+    text-rendering: optimizeLegibility;
+}
