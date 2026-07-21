@@ -326,6 +326,9 @@ button:hover {
 
 .toa-thuoc-header h1 {
     color: #4b2f20;
+    font-size: 27px !important;
+    line-height: 1.25 !important;
+    text-align: center !important;
 }
 
 .toa-thuoc-container h3 {
@@ -443,4 +446,543 @@ button:hover {
 
 .nut-dang-xuat:hover {
     background: #b02a37 !important;
+}
+.lich-su-benh-nhan-container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 25px;
+}
+
+.lich-su-benh-nhan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.lich-su-benh-nhan-header h1 {
+    margin: 0;
+}
+
+.tim-benh-nhan {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 18px;
+    margin-bottom: 25px;
+
+    font-size: 16px;
+
+    border: 1px solid #d6d6d6;
+    border-radius: 10px;
+
+    outline: none;
+}
+
+.tim-benh-nhan:focus {
+    border-color: #1976d2;
+    box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.12);
+}
+
+.danh-sach-benh-nhan {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.benh-nhan-card {
+    background: white;
+
+    border: 1px solid #e2e2e2;
+    border-radius: 12px;
+
+    padding: 20px;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
+}
+
+.benh-nhan-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    border-bottom: 1px solid #eeeeee;
+    padding-bottom: 12px;
+    margin-bottom: 15px;
+}
+
+.benh-nhan-card-top h2 {
+    margin: 0 0 5px 0;
+    font-size: 20px;
+}
+
+.benh-nhan-card-top p {
+    margin: 0;
+}
+
+.ngay-kham {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.benh-nhan-thong-tin {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px 25px;
+}
+
+.benh-nhan-thong-tin p {
+    margin: 6px 0;
+}
+
+.nut-xem-benh-nhan {
+    width: auto !important;
+    margin-top: 15px !important;
+    padding: 9px 16px !important;
+}
+
+.nut-ve-toa-thuoc {
+    width: auto !important;
+    padding: 9px 16px !important;
+}
+.chi-tiet-benh-nhan {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 25px;
+}
+
+.chi-tiet-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.chi-tiet-header h1 {
+    margin: 0;
+}
+
+.chi-tiet-khoi {
+    background: white;
+    border: 1px solid #e2e2e2;
+    border-radius: 12px;
+
+    padding: 20px;
+    margin-bottom: 18px;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+.chi-tiet-khoi h2 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.chi-tiet-khoi p {
+    line-height: 1.6;
+}
+
+.chi-tiet-vi-thuoc {
+    display: flex;
+    justify-content: space-between;
+
+    padding: 10px 5px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.chi-tiet-so-thang {
+    margin-top: 18px;
+}
+
+.chi-tiet-nut {
+    display: flex;
+    gap: 10px;
+}
+
+.chi-tiet-nut button,
+.nut-quay-lai-lich-su {
+    width: auto !important;
+    padding: 10px 18px !important;
+}
+/* Bình thường không hiện tiêu đề dành cho bản in */
+.tieu-de-in {
+    display: none;
+}
+
+/* Bình thường không hiện phần chữ ký */
+.chu-ky-toa {
+    display: none;
+}
+
+@media print {
+    /* Ẩn nút */
+    .chi-tiet-nut,
+    .nut-quay-lai-lich-su {
+        display: none !important;
+    }
+
+    /* Ẩn tiêu đề xem trên màn hình */
+    .tieu-de-xem {
+        display: none !important;
+    }
+
+    /* Hiện tiêu đề dành cho bản in */
+    .tieu-de-in {
+        display: block !important;
+        width: 100%;
+        text-align: center;
+        font-size: 22px !important;
+        margin: 8px 0 15px !important;
+    }
+
+    /* Hiện chữ ký */
+    .chu-ky-toa {
+        display: block !important;
+        text-align: center;
+        width: 260px;
+        margin-left: auto;
+        margin-top: 20px;
+        font-size: 14px;
+    }
+
+    .chu-ky-toa p {
+        margin: 3px 0;
+    }
+
+    .ghi-chu-ky {
+        font-style: italic;
+        font-size: 13px;
+    }
+
+    .khoang-ky {
+        height: 55px;
+    }
+
+    /* Nền trắng */
+    body {
+        background: white !important;
+    }
+
+    /* Khung chính */
+    .chi-tiet-benh-nhan {
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 8mm !important;
+        box-sizing: border-box;
+    }
+
+    /* Thu gọn từng phần */
+    .chi-tiet-khoi {
+        box-shadow: none !important;
+        border: none !important;
+        border-radius: 0 !important;
+
+        padding: 5px 0 !important;
+        margin: 0 0 5px 0 !important;
+
+        page-break-inside: avoid;
+    }
+
+    .chi-tiet-khoi h2 {
+        text-align: center;
+        font-size: 16px !important;
+        margin: 4px 0 7px !important;
+        padding-bottom: 4px !important;
+    }
+
+    .chi-tiet-khoi p {
+        font-size: 13px !important;
+        line-height: 1.3 !important;
+        margin: 2px 0 !important;
+    }
+
+    /* Danh sách thuốc */
+    .chi-tiet-vi-thuoc {
+        padding: 4px 3px !important;
+        font-size: 13px !important;
+    }
+
+    .chi-tiet-header {
+        margin: 0 !important;
+    }
+
+    @page {
+        size: A4;
+        margin: 8mm;
+    }
+}
+@media print {
+    /* Thông tin bệnh nhân chia thành 2 cột */
+    .thong-tin-benh-nhan-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        column-gap: 35px !important;
+        row-gap: 3px !important;
+        text-align: left !important;
+        padding: 0 15px !important;
+    }
+
+    /* Tăng kích thước chữ nội dung */
+    .chi-tiet-khoi p {
+        font-size: 14px !important;
+        line-height: 1.4 !important;
+        margin: 3px 0 !important;
+    }
+
+    /* Tiêu đề từng mục rõ hơn */
+    .chi-tiet-khoi h2 {
+        font-size: 17px !important;
+        margin: 7px 0 9px !important;
+    }
+
+    /* Tiêu đề toa */
+    .tieu-de-in {
+        font-size: 24px !important;
+        font-weight: 700 !important;
+        margin: 10px 0 15px !important;
+    }
+
+    /* Danh sách thuốc lớn hơn */
+    .chi-tiet-vi-thuoc {
+        font-size: 14px !important;
+        padding: 6px 5px !important;
+    }
+
+    /* Phần số thang */
+    .chi-tiet-so-thang {
+        font-size: 14px !important;
+        margin-top: 7px !important;
+    }
+
+    /* Phần ký tên */
+    .chu-ky-toa {
+        font-size: 14px !important;
+        margin-top: 22px !important;
+    }
+}
+/* =====================================
+   RESPONSIVE - ĐIỆN THOẠI
+===================================== */
+
+@media (max-width: 768px) {
+    html,
+    body,
+    #root {
+        width: 100% !important;
+        min-width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow-x: hidden !important;
+    }
+
+    body {
+        min-height: 100vh !important;
+    }
+
+    /* Header */
+    header {
+        width: 100% !important;
+        max-width: none !important;
+        box-sizing: border-box !important;
+        margin: 0 !important;
+    }
+
+    /* Khung trang chủ */
+    .container {
+        width: calc(100% - 24px) !important;
+        max-width: none !important;
+
+        margin: 20px 12px !important;
+        padding: 20px 18px !important;
+
+        box-sizing: border-box !important;
+    }
+
+    /* Tiêu đề trang chủ */
+    .container h1 {
+        font-size: 25px !important;
+        text-align: center !important;
+        white-space: normal !important;
+    }
+
+    /* Các nút trang chủ */
+    .container > button {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        margin: 7px 0 !important;
+    }
+
+    /* Nút phiếu châm cứu */
+    .btn-phieu-cham-cuu {
+        position: static !important;
+        width: 100% !important;
+        margin: 0 0 12px 0 !important;
+        box-sizing: border-box !important;
+    }
+}
+/* =====================================
+   TRANG THỐNG KÊ
+===================================== */
+
+.thong-ke-container {
+    width: 95%;
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 25px;
+    box-sizing: border-box;
+}
+
+.thong-ke-container > h1 {
+    text-align: center;
+    margin: 0 0 30px;
+}
+
+/* ===== BỐ CỤC 2 CỘT ===== */
+
+.thong-ke-layout {
+    display: grid;
+    grid-template-columns: 320px minmax(0, 1fr);
+    gap: 25px;
+    align-items: stretch;
+}
+
+/* ===== CỘT SỐ LIỆU BÊN TRÁI ===== */
+
+.thong-ke-cot-so-lieu {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.the-thong-ke {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+}
+
+.the-thong-ke h3 {
+    text-align: center;
+    margin: 0 0 18px;
+}
+
+.the-thong-ke p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin: 12px 0;
+}
+
+.the-thong-ke strong {
+    white-space: nowrap;
+}
+
+/* ===== BIỂU ĐỒ BÊN PHẢI ===== */
+
+.thong-ke-bieu-do {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 20px;
+    box-sizing: border-box;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+    min-width: 0;
+}
+
+.thong-ke-bieu-do h2 {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.khung-bieu-do {
+    width: 100%;
+    height: 350px;
+}
+
+/* ===== NGÀY / TUẦN / THÁNG / NĂM ===== */
+
+.thong-ke-bo-loc {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.thong-ke-bo-loc button {
+    width: auto;
+    min-width: 90px;
+    margin: 0;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.thong-ke-bo-loc button.active {
+    font-weight: bold;
+    transform: translateY(-2px);
+}
+
+/* ===== QUAY LẠI ===== */
+
+.thong-ke-container .nut-quay-lai {
+    width: 100%;
+    margin-top: 25px;
+}
+
+/* =====================================
+   RESPONSIVE ĐIỆN THOẠI
+===================================== */
+
+@media (max-width: 768px) {
+    .thong-ke-container {
+        width: 100%;
+        margin: 15px auto;
+        padding: 12px;
+    }
+
+    .thong-ke-container > h1 {
+        font-size: 27px;
+        margin-bottom: 20px;
+    }
+
+    /* Desktop 2 cột -> điện thoại 1 cột */
+    .thong-ke-layout {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .the-thong-ke {
+        width: 100%;
+        padding: 18px;
+    }
+
+    .thong-ke-bieu-do {
+        width: 100%;
+        padding: 12px 8px;
+    }
+
+    /* 4 nút thành 2 x 2 */
+    .thong-ke-bo-loc {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+
+    .thong-ke-bo-loc button {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .thong-ke-bieu-do h2 {
+        font-size: 20px;
+    }
+
+    .khung-bieu-do {
+        height: 300px;
+    }
 }
