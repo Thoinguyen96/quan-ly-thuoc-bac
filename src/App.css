@@ -996,3 +996,37 @@ button:hover {
     font-variant-ligatures: none;
     text-rendering: optimizeLegibility;
 }
+@media (max-width: 768px) {
+    .header-thoi-an {
+        height: auto !important;
+        min-height: 100px;
+        padding: 10px 12px;
+        gap: 10px;
+    }
+
+    .logo-thoi-an {
+        width: 65px;
+        height: 65px;
+        flex-shrink: 0;
+    }
+
+    .header-text {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .header-text h1 {
+        font-size: 18px !important;
+        line-height: 1.35 !important;
+        white-space: normal !important;
+        word-break: normal !important;
+        overflow-wrap: normal !important;
+    }
+
+    .header-text p {
+        font-size: 13px !important;
+        line-height: 1.4 !important;
+        white-space: normal !important;
+        word-break: normal !important;
+    }
+}
