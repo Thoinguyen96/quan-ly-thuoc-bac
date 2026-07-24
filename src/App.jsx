@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import NutDangXuat from "./components/NutDangXuat";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import PopupXacNhan from "./components/PopupXacNhan/PopupXacNhan";
 function Header() {
     return (
         <div className="header-thoi-an">
@@ -25,7 +26,8 @@ function App() {
     const [email, setEmail] = useState("");
     const [matKhau, setMatKhau] = useState("");
     const [user, setUser] = useState(null);
-
+    const [thuocChoXoa, setThuocChoXoa] = useState(null);
+    const [tuKhoaKho, setTuKhoaKho] = useState("");
     const [danhSachThuoc, setDanhSachThuoc] = useState([]);
     useEffect(() => {
         const layDanhSachThuoc = async () => {
@@ -71,6 +73,11 @@ function App() {
     const [tenThuocMoi, setTenThuocMoi] = useState("");
     const [giaThuocMoi, setGiaThuocMoi] = useState("");
     const [tonKhoMoi, setTonKhoMoi] = useState("");
+    // Dữ liệu sửa thuốc
+    const [thuocDangSua, setThuocDangSua] = useState(null);
+    const [tenThuocSua, setTenThuocSua] = useState("");
+    const [giaThuocSua, setGiaThuocSua] = useState("");
+    const [tonKhoSua, setTonKhoSua] = useState("");
     // Dữ liệu ô tìm kiếm
     const [tuKhoa, setTuKhoa] = useState("");
     const [lichSuBanHang, setLichSuBanHang] = useState([]);
@@ -106,6 +113,7 @@ function App() {
             .replace(/Đ/g, "D")
             .toLowerCase();
     };
+    const danhSachThuocTrongKho = danhSachThuoc.filter((thuoc) => boDau(thuoc.ten).includes(boDau(tuKhoaKho.trim())));
     // Đăng nhập tài khoản chủ
     const dangNhap = async () => {
         const { data, error } = await supabase.auth.signInWithPassword({
@@ -295,7 +303,93 @@ function App() {
 
         toast.success("Đã thêm thuốc và lưu lên server!");
     };
+    // =========================
+    // SỬA THUỐC
+    // =========================
 
+    const batDauSuaThuoc = (thuoc) => {
+        setThuocDangSua(thuoc);
+        setTenThuocSua(thuoc.ten);
+        setGiaThuocSua(thuoc.gia);
+        setTonKhoSua(thuoc.tonKho);
+    };
+
+    const huySuaThuoc = () => {
+        setThuocDangSua(null);
+        setTenThuocSua("");
+        setGiaThuocSua("");
+        setTonKhoSua("");
+    };
+
+    const luuSuaThuoc = async () => {
+        if (!thuocDangSua) return;
+
+        if (!tenThuocSua.trim()) {
+            toast.warning("Vui lòng nhập tên thuốc!");
+            return;
+        }
+
+        if (!giaThuocSua || Number(giaThuocSua) <= 0) {
+            toast.warning("Giá thuốc không hợp lệ!");
+            return;
+        }
+
+        if (tonKhoSua === "" || Number(tonKhoSua) < 0) {
+            toast.warning("Tồn kho không hợp lệ!");
+            return;
+        }
+
+        const { error } = await supabase
+            .from("thuoc")
+            .update({
+                ten: tenThuocSua.trim(),
+                gia: Number(giaThuocSua),
+                ton_kho: Number(tonKhoSua),
+            })
+            .eq("id", thuocDangSua.id);
+
+        if (error) {
+            toast.error("Lỗi sửa thuốc: " + error.message);
+            return;
+        }
+
+        setDanhSachThuoc((danhSachCu) =>
+            danhSachCu.map((thuoc) =>
+                thuoc.id === thuocDangSua.id
+                    ? {
+                          ...thuoc,
+                          ten: tenThuocSua.trim(),
+                          gia: Number(giaThuocSua),
+                          tonKho: Number(tonKhoSua),
+                      }
+                    : thuoc,
+            ),
+        );
+
+        toast.success("Đã cập nhật thuốc!");
+        huySuaThuoc();
+    };
+
+    // =========================
+    // XÓA THUỐC
+    // =========================
+
+    const xoaThuocKho = async () => {
+        if (!thuocChoXoa) return;
+
+        const { error } = await supabase.from("thuoc").delete().eq("id", thuocChoXoa.id);
+
+        if (error) {
+            toast.error("Lỗi xóa thuốc: " + error.message);
+            return;
+        }
+
+        setDanhSachThuoc((danhSachCu) => danhSachCu.filter((thuoc) => thuoc.id !== thuocChoXoa.id));
+
+        toast.success(`Đã xóa ${thuocChoXoa.ten}!`);
+
+        setThuocChoXoa(null);
+    };
     // =========================
     // TRANG ĐĂNG NHẬP
     // =========================
@@ -929,25 +1023,104 @@ function App() {
                     <hr />
 
                     <h2>Danh sách thuốc trong kho</h2>
+                    <div className="tim-kiem-kho">
+                        <span className="tim-kiem-kho-icon">🔍</span>
 
+                        <input
+                            type="text"
+                            placeholder="Tìm tên thuốc..."
+                            value={tuKhoaKho}
+                            onChange={(e) => setTuKhoaKho(e.target.value)}
+                        />
+
+                        {tuKhoaKho && (
+                            <button className="tim-kiem-kho-xoa" onClick={() => setTuKhoaKho("")} title="Xóa tìm kiếm">
+                                ✕
+                            </button>
+                        )}
+                    </div>
                     <div className="bang-kho">
                         <div className="dong-kho tieu-de-kho">
                             <span>Tên thuốc</span>
                             <span>Giá/kg</span>
                             <span>Tồn kho</span>
+                            <span>Thao tác</span>
                         </div>
 
-                        {danhSachThuoc.map((thuoc) => (
+                        {danhSachThuocTrongKho.map((thuoc) => (
                             <div key={thuoc.id} className="dong-kho">
-                                <strong>{thuoc.ten}</strong>
+                                {thuocDangSua?.id === thuoc.id ? (
+                                    <>
+                                        <input
+                                            type="text"
+                                            value={tenThuocSua}
+                                            onChange={(e) => setTenThuocSua(e.target.value)}
+                                        />
 
-                                <span>{thuoc.gia.toLocaleString("vi-VN")}đ</span>
+                                        <input
+                                            type="number"
+                                            value={giaThuocSua}
+                                            onChange={(e) => setGiaThuocSua(e.target.value)}
+                                        />
 
-                                <span>{thuoc.tonKho.toLocaleString("vi-VN")}g</span>
+                                        <input
+                                            type="number"
+                                            value={tonKhoSua}
+                                            onChange={(e) => setTonKhoSua(e.target.value)}
+                                        />
+
+                                        <div className="kho-thao-tac">
+                                            <button className="btn-luu-thuoc" onClick={luuSuaThuoc}>
+                                                💾
+                                            </button>
+
+                                            <button className="btn-huy-sua" onClick={huySuaThuoc}>
+                                                ✖
+                                            </button>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <strong>{thuoc.ten}</strong>
+
+                                        <span>{thuoc.gia.toLocaleString("vi-VN")}đ</span>
+
+                                        <span>{thuoc.tonKho.toLocaleString("vi-VN")}g</span>
+
+                                        <div className="kho-thao-tac">
+                                            <button
+                                                className="btn-sua-thuoc"
+                                                onClick={() => batDauSuaThuoc(thuoc)}
+                                                title="Sửa thuốc"
+                                            >
+                                                ✏️
+                                            </button>
+
+                                            <button
+                                                className="btn-xoa-thuoc"
+                                                onClick={() => setThuocChoXoa(thuoc)}
+                                                title="Xóa thuốc"
+                                            >
+                                                🗑️
+                                            </button>
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         ))}
                     </div>
-
+                    <PopupXacNhan
+                        mo={!!thuocChoXoa}
+                        tieuDe="Xóa thuốc?"
+                        noiDung={
+                            <>
+                                Anh có chắc muốn xóa <strong>“{thuocChoXoa?.ten}”</strong> khỏi kho không?
+                            </>
+                        }
+                        chuNutXacNhan="🗑️ Xóa thuốc"
+                        onHuy={() => setThuocChoXoa(null)}
+                        onXacNhan={xoaThuocKho}
+                    />
                     <button onClick={() => setTrang("trangchu")}>← Quay lại trang chủ</button>
                 </div>
             </div>

@@ -216,13 +216,12 @@ button:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 20px;
     box-sizing: border-box;
 }
 
 .logo-thoi-an {
-    width: 75px;
-    height: 75px;
+    width: 100px;
+    height: 100px;
     object-fit: contain;
 }
 
@@ -298,7 +297,7 @@ button:hover {
 .btn-phieu-cham-cuu {
     position: absolute;
     top: 140px;
-    left: calc(50% + 300px);
+    right: calc(50% + 300px);
     width: auto;
     padding: 12px 20px;
     border: none;
@@ -1028,5 +1027,133 @@ button:hover {
         line-height: 1.4 !important;
         white-space: normal !important;
         word-break: normal !important;
+    }
+}
+/* ============================= */
+/* NÚT THAO TÁC TRONG KHO THUỐC */
+/* ============================= */
+
+.kho-thao-tac {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+/* Ghi đè CSS button chung */
+.kho-thao-tac .btn-sua-thuoc,
+.kho-thao-tac .btn-xoa-thuoc,
+.kho-thao-tac .btn-luu-thuoc,
+.kho-thao-tac .btn-huy-sua {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 16px;
+    line-height: 1;
+
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+/* Sửa */
+.btn-sua-thuoc {
+    background: #f0ad4e !important;
+}
+
+/* Xóa */
+.btn-xoa-thuoc {
+    background: #dc3545 !important;
+}
+
+/* Lưu */
+.btn-luu-thuoc {
+    background: #198754 !important;
+}
+
+/* Hủy */
+.btn-huy-sua {
+    background: #6c757d !important;
+}
+/* TÌM KIẾM KHO THUỐC */
+
+.tim-kiem-kho {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto 20px;
+}
+
+.tim-kiem-kho input {
+    width: 100%;
+    height: 46px;
+    box-sizing: border-box;
+
+    padding: 0 45px;
+    margin: 0;
+
+    border: 1px solid #d5d5d5;
+    border-radius: 12px;
+
+    font-size: 16px;
+    background: #fff;
+}
+
+.tim-kiem-kho input:focus {
+    outline: none;
+    border-color: #8b5e3c;
+}
+
+.tim-kiem-kho-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+
+.tim-kiem-kho .tim-kiem-kho-xoa {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 30px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    border: none;
+    border-radius: 50%;
+
+    background: #eeeeee !important;
+    color: #555 !important;
+
+    font-size: 13px;
+}
+
+/* ĐIỆN THOẠI */
+
+@media (max-width: 600px) {
+    .tim-kiem-kho {
+        max-width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .tim-kiem-kho input {
+        height: 44px;
+        font-size: 15px;
+        padding-left: 42px;
+        padding-right: 42px;
     }
 }

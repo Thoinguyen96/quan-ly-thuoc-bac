@@ -1,0 +1,150 @@
+.popup-xac-nhan-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+    box-sizing: border-box;
+
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.popup-xac-nhan {
+    width: 100%;
+    max-width: 400px;
+
+    padding: 28px 25px 24px;
+    box-sizing: border-box;
+
+    background: #ffffff;
+    border-radius: 18px;
+    text-align: center;
+
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+
+    animation: popupHienRa 0.18s ease-out;
+}
+
+.popup-xac-nhan-icon {
+    width: 64px;
+    height: 64px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: 0 auto 14px;
+
+    border-radius: 50%;
+    background: #fff3e0;
+
+    font-size: 30px;
+}
+
+.popup-xac-nhan h2 {
+    margin: 0 0 12px;
+    font-size: 23px;
+    color: #222;
+}
+
+.popup-xac-nhan-noi-dung {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #666;
+}
+
+.popup-xac-nhan-nut {
+    display: flex;
+    gap: 10px;
+
+    margin-top: 24px;
+}
+
+/* Ghi đè CSS button chung của App */
+.popup-xac-nhan-nut button {
+    height: 44px !important;
+    min-height: 44px !important;
+
+    margin: 0 !important;
+    padding: 0 16px !important;
+
+    border: none !important;
+    border-radius: 10px !important;
+
+    font-size: 15px !important;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.popup-nut-huy {
+    flex: 1;
+
+    background: #eeeeee !important;
+    color: #333333 !important;
+}
+
+.popup-nut-dong-y {
+    flex: 1.4;
+
+    background: #dc3545 !important;
+    color: #ffffff !important;
+}
+
+@keyframes popupHienRa {
+    from {
+        opacity: 0;
+        transform: scale(0.92);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ========================= */
+/* ĐIỆN THOẠI */
+/* ========================= */
+
+@media (max-width: 600px) {
+    .popup-xac-nhan-overlay {
+        padding: 16px;
+    }
+
+    .popup-xac-nhan {
+        max-width: 340px;
+        padding: 23px 18px 19px;
+        border-radius: 16px;
+    }
+
+    .popup-xac-nhan-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 26px;
+    }
+
+    .popup-xac-nhan h2 {
+        font-size: 21px;
+    }
+
+    .popup-xac-nhan-noi-dung {
+        font-size: 15px;
+    }
+
+    .popup-xac-nhan-nut {
+        gap: 8px;
+        margin-top: 20px;
+    }
+
+    .popup-xac-nhan-nut button {
+        height: 43px !important;
+        min-height: 43px !important;
+        padding: 0 10px !important;
+        font-size: 14px !important;
+    }
+}
