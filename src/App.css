@@ -1157,3 +1157,38 @@ button:hover {
         padding-right: 42px;
     }
 }
+.doi-mat-khau-mo-ta {
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: -5px 0 18px;
+}
+
+@media (max-width: 600px) {
+    .doi-mat-khau-mo-ta {
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+}
+.btn-doi-mat-khau {
+    display: block;
+    width: fit-content;
+    margin: 10px auto 0;
+
+    padding: 0;
+    border: none;
+    background: transparent;
+
+    font-size: 13px;
+    font-weight: 500;
+    color: #666;
+
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.btn-doi-mat-khau:hover {
+    background: transparent;
+    color: #222;
+}

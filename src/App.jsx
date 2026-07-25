@@ -23,7 +23,7 @@ function Header() {
 }
 function App() {
     const [trang, setTrang] = useState("trangchu");
-    const [email, setEmail] = useState("");
+    const [tenDangNhap, setTenDangNhap] = useState("");
     const [matKhau, setMatKhau] = useState("");
     const [user, setUser] = useState(null);
     const [thuocChoXoa, setThuocChoXoa] = useState(null);
@@ -102,7 +102,9 @@ function App() {
     const [danhSachViThuoc, setDanhSachViThuoc] = useState([]);
     const [lichSuBenhNhan, setLichSuBenhNhan] = useState([]);
     const [tuKhoaBenhNhan, setTuKhoaBenhNhan] = useState("");
-
+    const [dangKhoiPhucMatKhau, setDangKhoiPhucMatKhau] = useState(false);
+    const [matKhauMoi, setMatKhauMoi] = useState("");
+    const [nhapLaiMatKhau, setNhapLaiMatKhau] = useState("");
     const [toaDangXem, setToaDangXem] = useState(null);
     // Hàm bỏ dấu tiếng Việt
     const boDau = (text) => {
@@ -116,22 +118,94 @@ function App() {
     const danhSachThuocTrongKho = danhSachThuoc.filter((thuoc) => boDau(thuoc.ten).includes(boDau(tuKhoaKho.trim())));
     // Đăng nhập tài khoản chủ
     const dangNhap = async () => {
+        const username = tenDangNhap.trim().toLowerCase();
+
+        // Tạm thời chỉ có tài khoản admin
+        if (username !== "thoi") {
+            toast.error("Tên đăng nhập không đúng!");
+            return;
+        }
+
         const { data, error } = await supabase.auth.signInWithPassword({
-            email: email,
+            email: "vanthoiqngcv@gmail.com",
             password: matKhau,
         });
 
         if (error) {
-            toast.error("Đăng nhập thất bại: " + error.message);
+            toast.error("Tên đăng nhập hoặc mật khẩu không đúng!");
             return;
         }
 
         setUser(data.user);
         toast.success("Đăng nhập thành công!");
     };
+    const guiEmailDoiMatKhau = async () => {
+        const { error } = await supabase.auth.resetPasswordForEmail("vanthoiqngcv@gmail.com", {
+            redirectTo: window.location.origin,
+        });
+
+        if (error) {
+            toast.error("Không thể gửi email đổi mật khẩu!");
+            return;
+        }
+
+        toast.success("Đã gửi email đổi mật khẩu. Anh kiểm tra Gmail nhé!");
+    };
+    const doiMatKhauMoi = async () => {
+        if (!matKhauMoi) {
+            toast.warning("Vui lòng nhập mật khẩu mới!");
+            return;
+        }
+
+        if (matKhauMoi !== nhapLaiMatKhau) {
+            toast.warning("Hai mật khẩu không giống nhau!");
+            return;
+        }
+
+        const { error } = await supabase.auth.updateUser({
+            password: matKhauMoi,
+        });
+
+        if (error) {
+            toast.error("Không thể đổi mật khẩu: " + error.message);
+            return;
+        }
+
+        toast.success("Đổi mật khẩu thành công!");
+
+        setMatKhauMoi("");
+        setNhapLaiMatKhau("");
+        setDangKhoiPhucMatKhau(false);
+
+        // Đăng xuất để đăng nhập lại bằng mật khẩu mới
+        await supabase.auth.signOut();
+        setUser(null);
+    };
     // Lọc thuốc theo từ khóa
     const thuocGoiY = danhSachThuoc.filter((thuoc) => boDau(thuoc.ten).includes(boDau(tuKhoa)));
+    useEffect(() => {
+        // Kiểm tra ngay URL khi mở app từ email reset mật khẩu
+        const url = window.location.href;
 
+        if (url.includes("type=recovery") || url.includes("code=")) {
+            setDangKhoiPhucMatKhau(true);
+        }
+
+        // Đồng thời nghe sự kiện từ Supabase
+        const {
+            data: { subscription },
+        } = supabase.auth.onAuthStateChange((event) => {
+            console.log("AUTH EVENT:", event);
+
+            if (event === "PASSWORD_RECOVERY") {
+                setDangKhoiPhucMatKhau(true);
+            }
+        });
+
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, []);
     // Chọn thuốc từ danh sách gợi ý
     const chonThuoc = (thuoc) => {
         setThuocDangChon(thuoc);
@@ -393,7 +467,37 @@ function App() {
     // =========================
     // TRANG ĐĂNG NHẬP
     // =========================
+    if (dangKhoiPhucMatKhau) {
+        return (
+            <div className="login-page">
+                <div className="login-box">
+                    <div className="login-icon">🔐</div>
 
+                    <h2>ĐẶT MẬT KHẨU MỚI</h2>
+
+                    <p className="doi-mat-khau-mo-ta">Nhập mật khẩu mới cho tài khoản An Thời Đường</p>
+
+                    <input
+                        type="password"
+                        placeholder="Mật khẩu mới"
+                        value={matKhauMoi}
+                        onChange={(e) => setMatKhauMoi(e.target.value)}
+                        autoComplete="new-password"
+                    />
+
+                    <input
+                        type="password"
+                        placeholder="Nhập lại mật khẩu mới"
+                        value={nhapLaiMatKhau}
+                        onChange={(e) => setNhapLaiMatKhau(e.target.value)}
+                        autoComplete="new-password"
+                    />
+
+                    <button onClick={doiMatKhauMoi}>🔑 Đổi mật khẩu</button>
+                </div>
+            </div>
+        );
+    }
     if (!user) {
         return (
             <div>
@@ -401,7 +505,13 @@ function App() {
                 <div className="container">
                     <h1>🔐 ĐĂNG NHẬP</h1>
 
-                    <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <input
+                        type="text"
+                        placeholder="Tên đăng nhập"
+                        value={tenDangNhap}
+                        onChange={(e) => setTenDangNhap(e.target.value)}
+                        autoComplete="username"
+                    />
 
                     <input
                         type="password"
@@ -416,6 +526,9 @@ function App() {
                     />
 
                     <button onClick={dangNhap}>🔑 Đăng nhập</button>
+                    <button type="button" className="btn-doi-mat-khau" onClick={guiEmailDoiMatKhau}>
+                        Đổi mật khẩu
+                    </button>
                 </div>
             </div>
         );
