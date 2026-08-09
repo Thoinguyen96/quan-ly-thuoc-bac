@@ -173,14 +173,13 @@ button:hover {
 
 .dong-kho {
     display: grid;
-    grid-template-columns: 2fr 1.5fr 1.5fr;
+    grid-template-columns: 2fr 1.5fr 1.5fr 1fr;
     gap: 20px;
     padding: 12px;
     border-bottom: 1px solid #ddd;
     text-align: left;
     align-items: center;
 }
-
 .tieu-de-kho {
     font-weight: bold;
     background: #f5f5f5;
@@ -1191,4 +1190,19 @@ button:hover {
 .btn-doi-mat-khau:hover {
     background: transparent;
     color: #222;
+}
+
+.thong-tin-tai-khoan {
+    position: fixed;
+    right: 145px;
+    bottom: 20px;
+
+    background: white;
+    padding: 12px 20px;
+    border-radius: 25px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+
+    font-size: 16px;
+    font-weight: 500;
+    z-index: 9999;
 }

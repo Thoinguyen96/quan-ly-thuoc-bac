@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import NutDangXuat from "./components/NutDangXuat";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import PopupXacNhan from "./components/PopupXacNhan/PopupXacNhan";
+import TaoNhanVien from "./components/TaoNhanVien/TaoNhanVien.jsx";
 function Header() {
     return (
         <div className="header-thoi-an">
@@ -29,6 +30,18 @@ function App() {
     const [thuocChoXoa, setThuocChoXoa] = useState(null);
     const [tuKhoaKho, setTuKhoaKho] = useState("");
     const [danhSachThuoc, setDanhSachThuoc] = useState([]);
+    // =========================
+    // KIỂM TRA QUYỀN NHÂN VIÊN
+    // =========================
+
+    const laAdmin = user?.vai_tro === "admin";
+
+    const coQuyen = (quyen) => {
+        return laAdmin || user?.[quyen] === true;
+    };
+
+    const coQuyenKhoThuoc =
+        laAdmin || user?.quyen_them_thuoc || user?.quyen_sua_thuoc || user?.quyen_xoa_thuoc || user?.quyen_sua_gia;
     useEffect(() => {
         const layDanhSachThuoc = async () => {
             const { data, error } = await supabase.from("thuoc").select("*").order("id", { ascending: true });
@@ -120,23 +133,64 @@ function App() {
     const dangNhap = async () => {
         const username = tenDangNhap.trim().toLowerCase();
 
-        // Tạm thời chỉ có tài khoản admin
-        if (username !== "thoi") {
-            toast.error("Tên đăng nhập không đúng!");
+        if (!username) {
+            toast.error("Vui lòng nhập tên đăng nhập!");
             return;
         }
 
+        if (!matKhau) {
+            toast.error("Vui lòng nhập mật khẩu!");
+            return;
+        }
+
+        // Tài khoản chủ phòng
+        const email = username === "thoi" ? "vanthoiqngcv@gmail.com" : `${username}@dongy.local`;
+
+        // Đăng nhập Supabase Auth
         const { data, error } = await supabase.auth.signInWithPassword({
-            email: "vanthoiqngcv@gmail.com",
+            email,
             password: matKhau,
         });
 
         if (error) {
+            console.error("Lỗi đăng nhập:", error);
             toast.error("Tên đăng nhập hoặc mật khẩu không đúng!");
             return;
         }
 
-        setUser(data.user);
+        console.log("UID đăng nhập:", data.user.id);
+
+        // Lấy thông tin nhân viên theo UID
+        const { data: nhanVien, error: nvError } = await supabase
+            .from("nhan_vien")
+            .select("*")
+            .eq("id", data.user.id)
+            .maybeSingle();
+
+        console.log("Nhân viên:", nhanVien);
+        console.log("Lỗi nhân viên:", nvError);
+
+        if (nvError) {
+            console.error("Lỗi lấy nhân viên:", nvError);
+            toast.error("Không thể lấy thông tin tài khoản!");
+            return;
+        }
+
+        if (!nhanVien) {
+            console.error("Không có nhân viên với UID:", data.user.id);
+            toast.error("Không tìm thấy thông tin tài khoản!");
+            await supabase.auth.signOut();
+            return;
+        }
+
+        // Kiểm tra tài khoản có đang hoạt động không
+        if (!nhanVien.trang_thai) {
+            toast.error("Tài khoản đã bị khóa!");
+            await supabase.auth.signOut();
+            return;
+        }
+
+        setUser(nhanVien);
         toast.success("Đăng nhập thành công!");
     };
     const guiEmailDoiMatKhau = async () => {
@@ -757,6 +811,10 @@ function App() {
     // =========================
 
     if (trang === "banhang") {
+        if (!coQuyen("quyen_ban_thuoc")) {
+            setTrang("trangchu");
+            return null;
+        }
         return (
             <div>
                 <Header />
@@ -1098,6 +1156,19 @@ function App() {
             </>
         );
     }
+    if (trang === "quanlynhanvien") {
+        return (
+            <div>
+                <Header />
+
+                <div className="container">
+                    <button onClick={() => setTrang("trangchu")}>← Quay lại</button>
+
+                    <TaoNhanVien />
+                </div>
+            </div>
+        );
+    }
     // =========================
     // TRANG KHO THUỐC
     // =========================
@@ -1244,6 +1315,10 @@ function App() {
     // ==========================
 
     if (trang === "lichsu") {
+        if (!coQuyen("quyen_ban_thuoc")) {
+            setTrang("trangchu");
+            return null;
+        }
         return (
             <div>
                 <Header />
@@ -1280,7 +1355,7 @@ function App() {
                         ))
                     )}
 
-                    <button onClick={() => setTrang("banhang")}>← Quay lại bán hàng</button>
+                    {coQuyen("quyen_ban_thuoc") && <button onClick={() => setTrang("banhang")}>💰 Bán hàng</button>}
                 </div>
             </div>
         );
@@ -1490,6 +1565,10 @@ function App() {
         );
     }
     if (trang === "lichsubenhnhan") {
+        if (!coQuyen("quyen_xem_benh_nhan")) {
+            setTrang("trangchu");
+            return null;
+        }
         const danhSachLoc = lichSuBenhNhan.filter((benhNhan) => {
             const tuKhoa = tuKhoaBenhNhan.toLowerCase().trim();
 
@@ -1824,38 +1903,60 @@ function App() {
 
     return (
         <div>
-            <Header />;
+            <Header />
             <button className="btn-phieu-cham-cuu" onClick={() => setTrang("phieuchamcuu")}>
                 🖨️ Phiếu châm cứu
             </button>
             <div className="container">
                 <h1>🏥 QUẢN LÝ THUỐC BẮC</h1>
 
-                <button onClick={() => setTrang("banhang")}>💰 Bán hàng</button>
+                {(user?.vai_tro === "admin" || user?.quyen_ban_thuoc) && (
+                    <button onClick={() => setTrang("banhang")}>💰 Bán hàng</button>
+                )}
 
                 <button onClick={() => setTrang("khothuoc")}>📦 Kho thuốc</button>
-                <button
-                    onClick={async () => {
-                        await taiLichSuBenhNhan();
-                        setTrang("lichsubenhnhan");
-                    }}
-                >
-                    👨‍⚕️ Bệnh nhân
-                </button>
-                <button onClick={() => setTrang("toathuoc")}>📄 Toa thuốc</button>
-                <button
-                    onClick={async () => {
-                        await taiThongKe();
-                        await taiDuLieuBieuDo("tuan");
 
-                        setKieuThongKe("tuan");
-                        setTrang("thongke");
-                    }}
-                >
-                    📊 Thống kê
-                </button>
+                {(user?.vai_tro === "admin" || user?.quyen_xem_benh_nhan) && (
+                    <button
+                        onClick={async () => {
+                            await taiLichSuBenhNhan();
+                            setTrang("lichsubenhnhan");
+                        }}
+                    >
+                        👨‍⚕️ Bệnh nhân
+                    </button>
+                )}
+
+                {user?.vai_tro === "admin" && <button onClick={() => setTrang("toathuoc")}>📄 Toa thuốc</button>}
+
+                {user?.vai_tro === "admin" && (
+                    <button
+                        onClick={async () => {
+                            await taiThongKe();
+                            await taiDuLieuBieuDo("tuan");
+
+                            setKieuThongKe("tuan");
+                            setTrang("thongke");
+                        }}
+                    >
+                        📊 Thống kê
+                    </button>
+                )}
+                {user?.vai_tro === "admin" && (
+                    <button onClick={() => setTrang("quanlynhanvien")}>👥 Quản lý nhân viên</button>
+                )}
             </div>
-            <NutDangXuat setUser={setUser} />
+
+            <div className="thanh-tai-khoan">
+                <NutDangXuat setUser={setUser} />
+
+                <div className="thong-tin-tai-khoan">
+                    👤{" "}
+                    {user?.vai_tro === "admin"
+                        ? "Chủ phòng – " + (user?.ten_dang_nhap || "")
+                        : "Nhân viên – " + (user?.ten_dang_nhap || "")}
+                </div>
+            </div>
         </div>
     );
 }
