@@ -30,10 +30,28 @@ function App() {
     const [thuocChoXoa, setThuocChoXoa] = useState(null);
     const [tuKhoaKho, setTuKhoaKho] = useState("");
     const [danhSachThuoc, setDanhSachThuoc] = useState([]);
+    const [danhSachNhanVien, setDanhSachNhanVien] = useState([]);
     // =========================
     // KIỂM TRA QUYỀN NHÂN VIÊN
     // =========================
+    const xoaNhanVien = async () => {
+        if (!nhanVienCanXoa) return;
 
+        const { error } = await supabase.from("nhan_vien").delete().eq("id", nhanVienCanXoa.id);
+
+        if (error) {
+            console.error("Lỗi xóa nhân viên:", error);
+            toast.error("Không thể xóa tài khoản nhân viên!");
+            return;
+        }
+
+        toast.success("Đã xóa tài khoản nhân viên!");
+
+        // Xóa ngay khỏi danh sách trên giao diện
+        setDanhSachNhanVien((ds) => ds.filter((nv) => nv.id !== nhanVienCanXoa.id));
+
+        setNhanVienCanXoa(null);
+    };
     const laAdmin = user?.vai_tro === "admin";
 
     const coQuyen = (quyen) => {
@@ -63,6 +81,18 @@ function App() {
 
         layDanhSachThuoc();
     }, []);
+
+    const taiDanhSachNhanVien = async () => {
+        const { data, error } = await supabase.from("nhan_vien").select("*").order("id", { ascending: true });
+
+        if (error) {
+            console.error("Lỗi lấy danh sách nhân viên:", error);
+            toast.error("Không lấy được danh sách nhân viên");
+            return;
+        }
+
+        setDanhSachNhanVien(data || []);
+    };
     const [kieuThongKe, setKieuThongKe] = useState("tuan");
     const [duLieuBieuDo, setDuLieuBieuDo] = useState([]);
     const [thongKe, setThongKe] = useState({
@@ -93,6 +123,18 @@ function App() {
     const [tonKhoSua, setTonKhoSua] = useState("");
     // Dữ liệu ô tìm kiếm
     const [tuKhoa, setTuKhoa] = useState("");
+    const [nhanVienCanXoa, setNhanVienCanXoa] = useState(null);
+    const [nhanVienCanSua, setNhanVienCanSua] = useState(null);
+    const [tenDangNhapSua, setTenDangNhapSua] = useState("");
+    const [hoTenSua, setHoTenSua] = useState("");
+    const [matKhauSua, setMatKhauSua] = useState("");
+
+    const [quyenBanThuocSua, setQuyenBanThuocSua] = useState(false);
+    const [quyenXemBenhNhanSua, setQuyenXemBenhNhanSua] = useState(false);
+    const [quyenThemThuocSua, setQuyenThemThuocSua] = useState(false);
+    const [quyenSuaThuocSua, setQuyenSuaThuocSua] = useState(false);
+    const [quyenXoaThuocSua, setQuyenXoaThuocSua] = useState(false);
+    const [quyenSuaGiaSua, setQuyenSuaGiaSua] = useState(false);
     const [lichSuBanHang, setLichSuBanHang] = useState([]);
     const [toaThuoc, setToaThuoc] = useState({
         ho_ten: "",
@@ -128,6 +170,20 @@ function App() {
             .replace(/Đ/g, "D")
             .toLowerCase();
     };
+    useEffect(() => {
+        if (!nhanVienCanSua) return;
+
+        setTenDangNhapSua(nhanVienCanSua.ten_dang_nhap || "");
+        setHoTenSua(nhanVienCanSua.ho_ten || "");
+        setMatKhauSua("");
+
+        setQuyenBanThuocSua(!!nhanVienCanSua.quyen_ban_thuoc);
+        setQuyenXemBenhNhanSua(!!nhanVienCanSua.quyen_xem_benh_nhan);
+        setQuyenThemThuocSua(!!nhanVienCanSua.quyen_them_thuoc);
+        setQuyenSuaThuocSua(!!nhanVienCanSua.quyen_sua_thuoc);
+        setQuyenXoaThuocSua(!!nhanVienCanSua.quyen_xoa_thuoc);
+        setQuyenSuaGiaSua(!!nhanVienCanSua.quyen_sua_gia);
+    }, [nhanVienCanSua]);
     const danhSachThuocTrongKho = danhSachThuoc.filter((thuoc) => boDau(thuoc.ten).includes(boDau(tuKhoaKho.trim())));
     // Đăng nhập tài khoản chủ
     const dangNhap = async () => {
@@ -308,7 +364,78 @@ function App() {
     const xoaThuoc = (idDon) => {
         setGioHang(gioHang.filter((item) => item.idDon !== idDon));
     };
+    const luuSuaNhanVien = async () => {
+        if (!nhanVienCanSua) return;
 
+        if (!tenDangNhapSua.trim() || !hoTenSua.trim()) {
+            toast.warning("Vui lòng nhập đầy đủ tên đăng nhập và họ tên!");
+            return;
+        }
+
+        if (matKhauSua && matKhauSua.length < 6) {
+            toast.error("Mật khẩu mới phải có ít nhất 6 ký tự!");
+            return;
+        }
+
+        try {
+            const { data, error } = await supabase.functions.invoke("sua-nhan-vien", {
+                body: {
+                    id: nhanVienCanSua.id,
+                    ten_dang_nhap: tenDangNhapSua.trim().toLowerCase(),
+                    ho_ten: hoTenSua.trim(),
+
+                    // Để trống = không đổi mật khẩu
+                    mat_khau: matKhauSua || null,
+
+                    quyen_ban_thuoc: quyenBanThuocSua,
+                    quyen_xem_benh_nhan: quyenXemBenhNhanSua,
+                    quyen_them_thuoc: quyenThemThuocSua,
+                    quyen_sua_thuoc: quyenSuaThuocSua,
+                    quyen_xoa_thuoc: quyenXoaThuocSua,
+                    quyen_sua_gia: quyenSuaGiaSua,
+                },
+            });
+
+            if (error) {
+                console.error("Lỗi sửa nhân viên:", error);
+                console.error("Chi tiết:", error.message);
+                toast.error(error.message || "Không thể cập nhật tài khoản!");
+                return;
+            }
+
+            if (data?.error) {
+                toast.error(data.error);
+                return;
+            }
+
+            toast.success("Đã cập nhật tài khoản nhân viên!");
+
+            // Cập nhật ngay danh sách trên giao diện
+            setDanhSachNhanVien((ds) =>
+                ds.map((nv) =>
+                    nv.id === nhanVienCanSua.id
+                        ? {
+                              ...nv,
+                              ten_dang_nhap: tenDangNhapSua.trim().toLowerCase(),
+                              ho_ten: hoTenSua.trim(),
+                              quyen_ban_thuoc: quyenBanThuocSua,
+                              quyen_xem_benh_nhan: quyenXemBenhNhanSua,
+                              quyen_them_thuoc: quyenThemThuocSua,
+                              quyen_sua_thuoc: quyenSuaThuocSua,
+                              quyen_xoa_thuoc: quyenXoaThuocSua,
+                              quyen_sua_gia: quyenSuaGiaSua,
+                          }
+                        : nv,
+                ),
+            );
+
+            setMatKhauSua("");
+            setNhanVienCanSua(null);
+        } catch (error) {
+            console.error(error);
+            toast.error("Có lỗi xảy ra khi cập nhật tài khoản!");
+        }
+    };
     // Tính tổng tiền
     const tongTien = gioHang.reduce((tong, item) => tong + item.thanhTien, 0);
     // Thanh toán và trừ tồn kho trên Supabase
@@ -1165,10 +1292,169 @@ function App() {
                     <button onClick={() => setTrang("trangchu")}>← Quay lại</button>
 
                     <TaoNhanVien />
+                    <button
+                        type="button"
+                        onClick={async () => {
+                            await taiDanhSachNhanVien();
+                            setTrang("danhsachnhanvien");
+                        }}
+                    >
+                        📄 Danh sách tài khoản nhân viên
+                    </button>
                 </div>
             </div>
         );
     }
+    if (trang === "danhsachnhanvien") {
+        return (
+            <div>
+                <Header />
+
+                <div className="container">
+                    <button onClick={() => setTrang("quanlynhanvien")}>← Quay lại</button>
+
+                    <h1>📋 Danh sách tài khoản nhân viên</h1>
+                    {danhSachNhanVien
+                        .filter((nv) => nv.vai_tro !== "admin")
+                        .map((nv) => (
+                            <div className="dong-tai-khoan" key={nv.id}>
+                                <div className="ten-tai-khoan">👤 {nv.ten_dang_nhap}</div>
+
+                                <div className="nhom-nut-tai-khoan">
+                                    <button onClick={() => setNhanVienCanSua(nv)}>✏️ Sửa</button>
+
+                                    <button className="nut-xoa-tai-khoan" onClick={() => setNhanVienCanXoa(nv)}>
+                                        🗑️ Xóa
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    {nhanVienCanSua && (
+                        <div className="popup-sua-nhan-vien">
+                            <h2>✏️ Sửa tài khoản nhân viên</h2>
+
+                            <input
+                                type="text"
+                                placeholder="Tên đăng nhập"
+                                value={tenDangNhapSua}
+                                onChange={(e) => setTenDangNhapSua(e.target.value)}
+                            />
+
+                            <input
+                                type="text"
+                                placeholder="Họ tên nhân viên"
+                                value={hoTenSua}
+                                onChange={(e) => setHoTenSua(e.target.value)}
+                            />
+
+                            <input
+                                type="password"
+                                placeholder="Mật khẩu mới (để trống nếu không đổi)"
+                                value={matKhauSua}
+                                onChange={(e) => setMatKhauSua(e.target.value)}
+                            />
+
+                            <h3>Quyền nhân viên</h3>
+
+                            <div className="quyen-nhan-vien">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        checked={quyenBanThuocSua}
+                                        onChange={(e) => setQuyenBanThuocSua(e.target.checked)}
+                                    />
+                                    Bán thuốc
+                                </label>
+
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        checked={quyenXemBenhNhanSua}
+                                        onChange={(e) => setQuyenXemBenhNhanSua(e.target.checked)}
+                                    />
+                                    Xem bệnh nhân
+                                </label>
+
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        checked={quyenThemThuocSua}
+                                        onChange={(e) => setQuyenThemThuocSua(e.target.checked)}
+                                    />
+                                    Thêm thuốc
+                                </label>
+
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        checked={quyenSuaThuocSua}
+                                        onChange={(e) => setQuyenSuaThuocSua(e.target.checked)}
+                                    />
+                                    Sửa thuốc
+                                </label>
+
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        checked={quyenXoaThuocSua}
+                                        onChange={(e) => setQuyenXoaThuocSua(e.target.checked)}
+                                    />
+                                    Xóa thuốc
+                                </label>
+
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        checked={quyenSuaGiaSua}
+                                        onChange={(e) => setQuyenSuaGiaSua(e.target.checked)}
+                                    />
+                                    Sửa giá thuốc
+                                </label>
+                            </div>
+
+                            <div className="nut-sua-nhan-vien">
+                                <button onClick={() => setNhanVienCanSua(null)}>Hủy</button>
+
+                                <button onClick={luuSuaNhanVien}>Lưu thay đổi</button>
+                            </div>
+                        </div>
+                    )}
+                    <PopupXacNhan
+                        mo={!!nhanVienCanXoa}
+                        tieuDe="Xóa tài khoản nhân viên"
+                        noiDung={`Anh có chắc muốn xóa tài khoản "${nhanVienCanXoa?.ten_dang_nhap}" không?`}
+                        chuNutXacNhan="Xóa"
+                        onHuy={() => setNhanVienCanXoa(null)}
+                        onXacNhan={xoaNhanVien}
+                    />
+                </div>
+            </div>
+        );
+    }
+    if (trang === "danhsachnhanvien") {
+        return (
+            <div>
+                <Header />
+
+                <div className="container">
+                    <button onClick={() => setTrang("quanlynhanvien")}>← Quay lại</button>
+
+                    <h1>📋 Danh sách tài khoản nhân viên</h1>
+                    <PopupXacNhan
+                        mo={!!nhanVienCanXoa}
+                        tieuDe="Xóa tài khoản"
+                        noiDung={`Anh có chắc muốn xóa tài khoản "${nhanVienCanXoa?.ten_dang_nhap}" không?`}
+                        chuNutXacNhan="Xóa"
+                        onHuy={() => setNhanVienCanXoa(null)}
+                        onXacNhan={xoaNhanVien}
+                    />
+
+                    <p>Đang làm...</p>
+                </div>
+            </div>
+        );
+    }
+
     // =========================
     // TRANG KHO THUỐC
     // =========================

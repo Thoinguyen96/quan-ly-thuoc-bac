@@ -1,28 +1,29 @@
 import { useState } from "react";
 import { supabase } from "../../supabase";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./TaoNhanVien.css";
 function TaoNhanVien() {
     const [tenDangNhap, setTenDangNhap] = useState("");
     const [matKhau, setMatKhau] = useState("");
     const [hoTen, setHoTen] = useState("");
-
+    const [quyenKhoThuoc, setQuyenKhoThuoc] = useState(false);
     const [quyenBanThuoc, setQuyenBanThuoc] = useState(true);
     const [quyenXemBenhNhan, setQuyenXemBenhNhan] = useState(true);
     const [quyenThemThuoc, setQuyenThemThuoc] = useState(false);
     const [quyenSuaThuoc, setQuyenSuaThuoc] = useState(false);
     const [quyenXoaThuoc, setQuyenXoaThuoc] = useState(false);
     const [quyenSuaGia, setQuyenSuaGia] = useState(false);
-
     const [dangTao, setDangTao] = useState(false);
 
     const taoNhanVien = async () => {
         if (!tenDangNhap.trim() || !matKhau || !hoTen.trim()) {
-            alert("Vui lòng nhập đầy đủ tên đăng nhập, mật khẩu và họ tên!");
+            toast.warning("Vui lòng nhập đầy đủ tên đăng nhập, mật khẩu và họ tên!");
             return;
         }
 
         if (matKhau.length < 6) {
-            alert("Mật khẩu phải có ít nhất 6 ký tự!");
+            toast.error("Mật khẩu phải có ít nhất 6 ký tự!");
             return;
         }
 
@@ -34,7 +35,7 @@ function TaoNhanVien() {
                     ten_dang_nhap: tenDangNhap.trim().toLowerCase(),
                     mat_khau: matKhau,
                     ho_ten: hoTen.trim(),
-
+                    kho_thuoc: quyenKhoThuoc,
                     quyen_ban_thuoc: quyenBanThuoc,
                     quyen_xem_benh_nhan: quyenXemBenhNhan,
                     quyen_them_thuoc: quyenThemThuoc,
@@ -46,16 +47,16 @@ function TaoNhanVien() {
 
             if (error) {
                 console.error("Lỗi Edge Function:", error);
-                alert("Không thể tạo nhân viên!");
+                toast.error("Không thể tạo nhân viên!");
                 return;
             }
 
             if (data?.error) {
-                alert(data.error);
+                toast.error(data.error);
                 return;
             }
 
-            alert("Tạo tài khoản nhân viên thành công!");
+            toast.success("Tạo tài khoản nhân viên thành công!");
 
             setTenDangNhap("");
             setMatKhau("");
@@ -69,7 +70,7 @@ function TaoNhanVien() {
             setQuyenSuaGia(false);
         } catch (error) {
             console.error(error);
-            alert("Có lỗi xảy ra khi tạo tài khoản!");
+            toast.error("Có lỗi xảy ra khi tạo tài khoản!");
         } finally {
             setDangTao(false);
         }
@@ -101,7 +102,10 @@ function TaoNhanVien() {
             />
 
             <h3>Quyền nhân viên</h3>
-
+            <label>
+                <input type="checkbox" checked={quyenKhoThuoc} onChange={(e) => setQuyenKhoThuoc(e.target.checked)} />
+                Cho phép vào kho thuốc
+            </label>
             <div className="quyen-nhan-vien">
                 <label>
                     <input

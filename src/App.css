@@ -1206,3 +1206,53 @@ button:hover {
     font-weight: 500;
     z-index: 9999;
 }
+/* ===== DANH SÁCH TÀI KHOẢN ===== */
+
+.dong-tai-khoan {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    padding: 12px 16px;
+    margin: 8px 0;
+
+    background: #f5f5f5;
+    border-radius: 8px;
+}
+
+.ten-tai-khoan {
+    font-size: 17px;
+    font-weight: 600;
+    color: #555;
+}
+
+.nhom-nut-tai-khoan {
+    display: flex;
+    gap: 8px;
+}
+
+.nhom-nut-tai-khoan button {
+    width: auto !important;
+    min-width: 75px;
+    padding: 7px 12px !important;
+
+    border: none;
+    border-radius: 6px;
+
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.nut-sua-tai-khoan {
+    background: #1976d2;
+}
+
+.nut-xoa-tai-khoan {
+    background: #dc3545;
+}
+
+.nhom-nut-tai-khoan button:hover {
+    opacity: 0.85;
+}
