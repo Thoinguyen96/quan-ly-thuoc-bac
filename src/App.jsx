@@ -58,8 +58,7 @@ function App() {
         return laAdmin || user?.[quyen] === true;
     };
 
-    const coQuyenKhoThuoc =
-        laAdmin || user?.quyen_them_thuoc || user?.quyen_sua_thuoc || user?.quyen_xoa_thuoc || user?.quyen_sua_gia;
+    const coQuyenKhoThuoc = laAdmin || user?.quyen_kho_thuoc === true;
     useEffect(() => {
         const layDanhSachThuoc = async () => {
             const { data, error } = await supabase.from("thuoc").select("*").order("id", { ascending: true });
@@ -128,9 +127,10 @@ function App() {
     const [tenDangNhapSua, setTenDangNhapSua] = useState("");
     const [hoTenSua, setHoTenSua] = useState("");
     const [matKhauSua, setMatKhauSua] = useState("");
-
+    const [quyenKhoThuocSua, setQuyenKhoThuocSua] = useState(false);
     const [quyenBanThuocSua, setQuyenBanThuocSua] = useState(false);
     const [quyenXemBenhNhanSua, setQuyenXemBenhNhanSua] = useState(false);
+    const [quyenKhoThuoc, setQuyenKhoThuoc] = useState(false);
     const [quyenThemThuocSua, setQuyenThemThuocSua] = useState(false);
     const [quyenSuaThuocSua, setQuyenSuaThuocSua] = useState(false);
     const [quyenXoaThuocSua, setQuyenXoaThuocSua] = useState(false);
@@ -176,7 +176,7 @@ function App() {
         setTenDangNhapSua(nhanVienCanSua.ten_dang_nhap || "");
         setHoTenSua(nhanVienCanSua.ho_ten || "");
         setMatKhauSua("");
-
+        setQuyenKhoThuocSua(!!nhanVienCanSua.quyen_kho_thuoc);
         setQuyenBanThuocSua(!!nhanVienCanSua.quyen_ban_thuoc);
         setQuyenXemBenhNhanSua(!!nhanVienCanSua.quyen_xem_benh_nhan);
         setQuyenThemThuocSua(!!nhanVienCanSua.quyen_them_thuoc);
@@ -386,7 +386,7 @@ function App() {
 
                     // Để trống = không đổi mật khẩu
                     mat_khau: matKhauSua || null,
-
+                    quyen_kho_thuoc: quyenKhoThuocSua,
                     quyen_ban_thuoc: quyenBanThuocSua,
                     quyen_xem_benh_nhan: quyenXemBenhNhanSua,
                     quyen_them_thuoc: quyenThemThuocSua,
@@ -422,6 +422,7 @@ function App() {
                               quyen_xem_benh_nhan: quyenXemBenhNhanSua,
                               quyen_them_thuoc: quyenThemThuocSua,
                               quyen_sua_thuoc: quyenSuaThuocSua,
+                              quyen_kho_thuoc: quyenKhoThuocSua,
                               quyen_xoa_thuoc: quyenXoaThuocSua,
                               quyen_sua_gia: quyenSuaGiaSua,
                           }
@@ -1360,10 +1361,18 @@ function App() {
                                 <label>
                                     <input
                                         type="checkbox"
+                                        checked={quyenKhoThuocSua}
+                                        onChange={(e) => setQuyenKhoThuocSua(e.target.checked)}
+                                    />
+                                    Cho phép vào kho thuốc
+                                </label>
+                                <label>
+                                    <input
+                                        type="checkbox"
                                         checked={quyenBanThuocSua}
                                         onChange={(e) => setQuyenBanThuocSua(e.target.checked)}
                                     />
-                                    Bán thuốc
+                                    Bán hàng
                                 </label>
 
                                 <label>
@@ -1460,6 +1469,11 @@ function App() {
     // =========================
 
     if (trang === "khothuoc") {
+        if (!laAdmin && user?.quyen_kho_thuoc !== true) {
+            toast.error("Bạn không có quyền vào kho thuốc!");
+            setTrang("trangchu");
+            return null;
+        }
         return (
             <div>
                 <Header />
@@ -1642,6 +1656,7 @@ function App() {
                     )}
 
                     {coQuyen("quyen_ban_thuoc") && <button onClick={() => setTrang("banhang")}>💰 Bán hàng</button>}
+                    {coQuyen("quyen_kho_thuoc") && <button onClick={() => setTrang("khothuoc")}>💊 Kho thuốc</button>}
                 </div>
             </div>
         );
@@ -2200,7 +2215,9 @@ function App() {
                     <button onClick={() => setTrang("banhang")}>💰 Bán hàng</button>
                 )}
 
-                <button onClick={() => setTrang("khothuoc")}>📦 Kho thuốc</button>
+                {(laAdmin || user?.quyen_kho_thuoc === true) && (
+                    <button onClick={() => setTrang("khothuoc")}>📦 Kho thuốc</button>
+                )}
 
                 {(user?.vai_tro === "admin" || user?.quyen_xem_benh_nhan) && (
                     <button

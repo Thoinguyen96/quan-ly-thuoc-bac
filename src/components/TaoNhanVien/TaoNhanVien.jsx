@@ -61,7 +61,7 @@ function TaoNhanVien() {
             setTenDangNhap("");
             setMatKhau("");
             setHoTen("");
-
+            setQuyenKhoThuoc(false);
             setQuyenBanThuoc(true);
             setQuyenXemBenhNhan(true);
             setQuyenThemThuoc(false);
@@ -102,11 +102,16 @@ function TaoNhanVien() {
             />
 
             <h3>Quyền nhân viên</h3>
-            <label>
-                <input type="checkbox" checked={quyenKhoThuoc} onChange={(e) => setQuyenKhoThuoc(e.target.checked)} />
-                Cho phép vào kho thuốc
-            </label>
+
             <div className="quyen-nhan-vien">
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={quyenKhoThuoc}
+                        onChange={(e) => setQuyenKhoThuoc(e.target.checked)}
+                    />
+                    Cho phép vào kho thuốc
+                </label>
                 <label>
                     <input
                         type="checkbox"

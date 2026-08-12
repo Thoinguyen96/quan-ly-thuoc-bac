@@ -34,14 +34,16 @@
 
 .quyen-nhan-vien {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0;
     margin-bottom: 25px;
+    text-align: start;
 }
 
 .quyen-nhan-vien label {
-    font-size: 16px;
-    color: #333;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 10px;
 }
 
 .quyen-nhan-vien input {
