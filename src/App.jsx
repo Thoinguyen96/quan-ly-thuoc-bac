@@ -247,6 +247,15 @@ function App() {
         }
 
         setUser(nhanVien);
+        console.log("QUYỀN SAU ĐĂNG NHẬP:", {
+            kho: nhanVien.quyen_kho_thuoc,
+            ban: nhanVien.quyen_ban_thuoc,
+            benhNhan: nhanVien.quyen_xem_benh_nhan,
+            them: nhanVien.quyen_them_thuoc,
+            sua: nhanVien.quyen_sua_thuoc,
+            xoa: nhanVien.quyen_xoa_thuoc,
+            suaGia: nhanVien.quyen_sua_gia,
+        });
         toast.success("Đăng nhập thành công!");
     };
     const guiEmailDoiMatKhau = async () => {

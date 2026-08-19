@@ -28,14 +28,23 @@ function TaoNhanVien() {
         }
 
         setDangTao(true);
-
+        console.log("QUYỀN GỬI LÊN:", {
+            quyen_kho_thuoc: quyenKhoThuoc,
+            quyen_ban_thuoc: quyenBanThuoc,
+            quyen_xem_benh_nhan: quyenXemBenhNhan,
+            quyen_them_thuoc: quyenThemThuoc,
+            quyen_sua_thuoc: quyenSuaThuoc,
+            quyen_xoa_thuoc: quyenXoaThuoc,
+            quyen_sua_gia: quyenSuaGia,
+        });
         try {
             const { data, error } = await supabase.functions.invoke("tao-nhan-vien", {
                 body: {
                     ten_dang_nhap: tenDangNhap.trim().toLowerCase(),
                     mat_khau: matKhau,
                     ho_ten: hoTen.trim(),
-                    kho_thuoc: quyenKhoThuoc,
+
+                    quyen_kho_thuoc: quyenKhoThuoc,
                     quyen_ban_thuoc: quyenBanThuoc,
                     quyen_xem_benh_nhan: quyenXemBenhNhan,
                     quyen_them_thuoc: quyenThemThuoc,
