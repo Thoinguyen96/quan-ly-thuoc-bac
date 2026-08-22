@@ -8,6 +8,15 @@ import NutDangXuat from "./components/NutDangXuat";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import PopupXacNhan from "./components/PopupXacNhan/PopupXacNhan";
 import TaoNhanVien from "./components/TaoNhanVien/TaoNhanVien.jsx";
+import Sidebar from "./components/Sidebar/Sidebar";
+import TrangChu from "./components/TrangChu/TrangChu";
+import BanHang from "./components/BanHang/BanHang";
+import KhoThuoc from "./components/KhoThuoc/KhoThuoc";
+import BenhNhan from "./components/BenhNhan/BenhNhan.jsx";
+import ChiTietBenhNhan from "./components/ChiTietBenhNhan/ChiTietBenhNhan";
+import QuanLyNhanVien from "./components/QuanLyNhanVien/QuanLyNhanVien";
+import ToaThuoc from "./components/ToaThuoc/ToaThuoc";
+import TaiKham from "./components/TaiKham/TaiKham";
 function Header() {
     return (
         <div className="header-thoi-an">
@@ -22,6 +31,7 @@ function Header() {
         </div>
     );
 }
+
 function App() {
     const [trang, setTrang] = useState("trangchu");
     const [tenDangNhap, setTenDangNhap] = useState("");
@@ -31,6 +41,7 @@ function App() {
     const [tuKhoaKho, setTuKhoaKho] = useState("");
     const [danhSachThuoc, setDanhSachThuoc] = useState([]);
     const [danhSachNhanVien, setDanhSachNhanVien] = useState([]);
+
     // =========================
     // KIỂM TRA QUYỀN NHÂN VIÊN
     // =========================
@@ -947,217 +958,6 @@ function App() {
     // TRANG BÁN HÀNG
     // =========================
 
-    if (trang === "banhang") {
-        if (!coQuyen("quyen_ban_thuoc")) {
-            setTrang("trangchu");
-            return null;
-        }
-        return (
-            <div>
-                <Header />
-                <div className="ban-hang-layout">
-                    {/* ===================== */}
-                    {/* CỘT TRÁI */}
-                    {/* ===================== */}
-                    <div className="cot-trai">
-                        <button className="btn-reset" onClick={resetBanHang}>
-                            ↻
-                        </button>
-                        <h1>💰 BÁN HÀNG</h1>
-
-                        {/* Ô TÌM THUỐC */}
-                        <div style={{ position: "relative" }}>
-                            <input
-                                type="text"
-                                placeholder="🔍 Tìm tên thuốc..."
-                                value={tuKhoa}
-                                onChange={(e) => {
-                                    setTuKhoa(e.target.value);
-                                    setThuocDangChon(null);
-                                }}
-                                onKeyDown={(e) => {
-                                    if (e.key === "Enter" && thuocGoiY.length > 0) {
-                                        chonThuoc(thuocGoiY[0]);
-                                    }
-                                }}
-                                style={{
-                                    width: "100%",
-                                    padding: "12px",
-                                    fontSize: "18px",
-                                    boxSizing: "border-box",
-                                }}
-                            />
-
-                            {/* DANH SÁCH GỢI Ý */}
-                            {tuKhoa && !thuocDangChon && (
-                                <div
-                                    style={{
-                                        border: "1px solid #ccc",
-                                        background: "white",
-                                        position: "absolute",
-                                        width: "100%",
-                                        zIndex: 10,
-                                        boxSizing: "border-box",
-                                    }}
-                                >
-                                    {thuocGoiY.length > 0 ? (
-                                        thuocGoiY.map((thuoc) => (
-                                            <div
-                                                key={thuoc.id}
-                                                onClick={() => chonThuoc(thuoc)}
-                                                style={{
-                                                    padding: "12px",
-                                                    cursor: "pointer",
-                                                    borderBottom: "1px solid #eee",
-                                                    textAlign: "left",
-                                                }}
-                                            >
-                                                <strong>{thuoc.ten}</strong>
-                                                {" — "}
-                                                {thuoc.gia.toLocaleString("vi-VN")}
-                                                đ/kg
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <div
-                                            style={{
-                                                padding: "12px",
-                                            }}
-                                        >
-                                            Không tìm thấy thuốc
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-                        </div>
-
-                        <br />
-
-                        {/* THUỐC ĐANG CHỌN */}
-
-                        {thuocDangChon && (
-                            <div>
-                                <p>
-                                    Đã chọn: <b>{thuocDangChon.ten}</b> — {thuocDangChon.gia.toLocaleString("vi-VN")}
-                                    đ/kg
-                                </p>
-
-                                <p>
-                                    📦 Tồn kho: <b>{thuocDangChon.tonKho}g</b>
-                                </p>
-                            </div>
-                        )}
-
-                        {/* NHẬP SỐ LƯỢNG */}
-                        <input
-                            type="number"
-                            placeholder="Nhập số lượng (gram) rồi nhấn Enter"
-                            value={soLuong}
-                            onChange={(e) => {
-                                const gram = e.target.value;
-                                setSoLuong(gram);
-
-                                if (thuocDangChon && gram && Number(gram) > 0) {
-                                    const tien = (thuocDangChon.gia / 1000) * Number(gram);
-                                    setSoTienMua(Math.round(tien));
-                                } else {
-                                    setSoTienMua("");
-                                }
-                            }}
-                            onKeyDown={(e) => {
-                                if (e.key === "Enter") {
-                                    themVaoDon();
-                                }
-                            }}
-                            style={{
-                                width: "100%",
-                                padding: "12px",
-                                fontSize: "18px",
-                                boxSizing: "border-box",
-                            }}
-                        />
-                        <input
-                            type="text"
-                            className="input-so-tien"
-                            placeholder="💵 Nhập số tiền khách mua (đ)"
-                            value={soTienMua ? Number(soTienMua).toLocaleString("vi-VN") : ""}
-                            onChange={(e) => {
-                                // Xóa dấu chấm để lấy số thật
-                                const tien = e.target.value.replace(/\D/g, "");
-
-                                setSoTienMua(tien);
-
-                                if (thuocDangChon && tien && Number(tien) > 0) {
-                                    const gram = (Number(tien) * 1000) / thuocDangChon.gia;
-
-                                    // Làm tròn tối đa 2 số thập phân
-                                    setSoLuong(Math.round(gram * 100) / 100);
-                                } else {
-                                    setSoLuong("");
-                                }
-                            }}
-                        />
-
-                        <br />
-                        <br />
-
-                        <button onClick={themVaoDon}>➕ Thêm vào đơn</button>
-
-                        <button onClick={() => setTrang("trangchu")}>← Quay lại trang chủ</button>
-                    </div>
-
-                    {/* ===================== */}
-                    {/* CỘT PHẢI */}
-                    {/* ===================== */}
-                    <div className="cot-phai">
-                        <h2>🧾 DANH SÁCH THUỐC</h2>
-
-                        {gioHang.length === 0 ? (
-                            <p>Chưa có thuốc nào trong đơn.</p>
-                        ) : (
-                            <div className="bang-thuoc">
-                                <div className="dong-thuoc tieu-de-bang">
-                                    <span>Tên thuốc</span>
-                                    <span>Số lượng</span>
-                                    <span>Đơn giá</span>
-                                    <span>Thành tiền</span>
-                                    <span></span>
-                                </div>
-
-                                {gioHang.map((item) => (
-                                    <div key={item.idDon} className="dong-thuoc">
-                                        <strong>{item.ten}</strong>
-
-                                        <span>{item.soLuong}g</span>
-
-                                        <span>{item.donGia.toLocaleString("vi-VN")}đ/kg</span>
-
-                                        <strong>{item.thanhTien.toLocaleString("vi-VN")}đ</strong>
-
-                                        <button className="btn-xoa-nho" onClick={() => xoaThuoc(item.idDon)}>
-                                            🗑️
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-
-                        <h2 className="tong-tien">Tổng tiền: {tongTien.toLocaleString("vi-VN")}đ</h2>
-
-                        <button onClick={thanhToan}>💵 Thanh toán</button>
-                        <button
-                            onClick={async () => {
-                                await taiLichSuBanHang();
-                                setTrang("lichsu");
-                            }}
-                        >
-                            🧾 Xem lịch sử bán hàng
-                        </button>
-                    </div>
-                </div>{" "}
-            </div>
-        );
-    }
     if (trang === "thongke") {
         return (
             <>
@@ -1293,28 +1093,7 @@ function App() {
             </>
         );
     }
-    if (trang === "quanlynhanvien") {
-        return (
-            <div>
-                <Header />
 
-                <div className="container">
-                    <button onClick={() => setTrang("trangchu")}>← Quay lại</button>
-
-                    <TaoNhanVien />
-                    <button
-                        type="button"
-                        onClick={async () => {
-                            await taiDanhSachNhanVien();
-                            setTrang("danhsachnhanvien");
-                        }}
-                    >
-                        📄 Danh sách tài khoản nhân viên
-                    </button>
-                </div>
-            </div>
-        );
-    }
     if (trang === "danhsachnhanvien") {
         return (
             <div>
@@ -1449,176 +1228,11 @@ function App() {
             </div>
         );
     }
-    if (trang === "danhsachnhanvien") {
-        return (
-            <div>
-                <Header />
-
-                <div className="container">
-                    <button onClick={() => setTrang("quanlynhanvien")}>← Quay lại</button>
-
-                    <h1>📋 Danh sách tài khoản nhân viên</h1>
-                    <PopupXacNhan
-                        mo={!!nhanVienCanXoa}
-                        tieuDe="Xóa tài khoản"
-                        noiDung={`Anh có chắc muốn xóa tài khoản "${nhanVienCanXoa?.ten_dang_nhap}" không?`}
-                        chuNutXacNhan="Xóa"
-                        onHuy={() => setNhanVienCanXoa(null)}
-                        onXacNhan={xoaNhanVien}
-                    />
-
-                    <p>Đang làm...</p>
-                </div>
-            </div>
-        );
-    }
 
     // =========================
     // TRANG KHO THUỐC
     // =========================
 
-    if (trang === "khothuoc") {
-        if (!laAdmin && user?.quyen_kho_thuoc !== true) {
-            toast.error("Bạn không có quyền vào kho thuốc!");
-            setTrang("trangchu");
-            return null;
-        }
-        return (
-            <div>
-                <Header />
-                <div className="container">
-                    <h1>📦 KHO THUỐC</h1>
-                    <h2>➕ Thêm thuốc mới</h2>
-
-                    <input
-                        type="text"
-                        placeholder="Tên thuốc"
-                        value={tenThuocMoi}
-                        onChange={(e) => setTenThuocMoi(e.target.value)}
-                    />
-
-                    <input
-                        type="number"
-                        placeholder="Giá bán (đ/kg)"
-                        value={giaThuocMoi}
-                        onChange={(e) => setGiaThuocMoi(e.target.value)}
-                    />
-
-                    <input
-                        type="number"
-                        placeholder="Tồn kho (gram)"
-                        value={tonKhoMoi}
-                        onChange={(e) => setTonKhoMoi(e.target.value)}
-                    />
-
-                    <button onClick={themThuocMoi}>➕ Thêm thuốc vào kho</button>
-
-                    <hr />
-
-                    <h2>Danh sách thuốc trong kho</h2>
-                    <div className="tim-kiem-kho">
-                        <span className="tim-kiem-kho-icon">🔍</span>
-
-                        <input
-                            type="text"
-                            placeholder="Tìm tên thuốc..."
-                            value={tuKhoaKho}
-                            onChange={(e) => setTuKhoaKho(e.target.value)}
-                        />
-
-                        {tuKhoaKho && (
-                            <button className="tim-kiem-kho-xoa" onClick={() => setTuKhoaKho("")} title="Xóa tìm kiếm">
-                                ✕
-                            </button>
-                        )}
-                    </div>
-                    <div className="bang-kho">
-                        <div className="dong-kho tieu-de-kho">
-                            <span>Tên thuốc</span>
-                            <span>Giá/kg</span>
-                            <span>Tồn kho</span>
-                            <span>Thao tác</span>
-                        </div>
-
-                        {danhSachThuocTrongKho.map((thuoc) => (
-                            <div key={thuoc.id} className="dong-kho">
-                                {thuocDangSua?.id === thuoc.id ? (
-                                    <>
-                                        <input
-                                            type="text"
-                                            value={tenThuocSua}
-                                            onChange={(e) => setTenThuocSua(e.target.value)}
-                                        />
-
-                                        <input
-                                            type="number"
-                                            value={giaThuocSua}
-                                            onChange={(e) => setGiaThuocSua(e.target.value)}
-                                        />
-
-                                        <input
-                                            type="number"
-                                            value={tonKhoSua}
-                                            onChange={(e) => setTonKhoSua(e.target.value)}
-                                        />
-
-                                        <div className="kho-thao-tac">
-                                            <button className="btn-luu-thuoc" onClick={luuSuaThuoc}>
-                                                💾
-                                            </button>
-
-                                            <button className="btn-huy-sua" onClick={huySuaThuoc}>
-                                                ✖
-                                            </button>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <>
-                                        <strong>{thuoc.ten}</strong>
-
-                                        <span>{thuoc.gia.toLocaleString("vi-VN")}đ</span>
-
-                                        <span>{thuoc.tonKho.toLocaleString("vi-VN")}g</span>
-
-                                        <div className="kho-thao-tac">
-                                            <button
-                                                className="btn-sua-thuoc"
-                                                onClick={() => batDauSuaThuoc(thuoc)}
-                                                title="Sửa thuốc"
-                                            >
-                                                ✏️
-                                            </button>
-
-                                            <button
-                                                className="btn-xoa-thuoc"
-                                                onClick={() => setThuocChoXoa(thuoc)}
-                                                title="Xóa thuốc"
-                                            >
-                                                🗑️
-                                            </button>
-                                        </div>
-                                    </>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                    <PopupXacNhan
-                        mo={!!thuocChoXoa}
-                        tieuDe="Xóa thuốc?"
-                        noiDung={
-                            <>
-                                Anh có chắc muốn xóa <strong>“{thuocChoXoa?.ten}”</strong> khỏi kho không?
-                            </>
-                        }
-                        chuNutXacNhan="🗑️ Xóa thuốc"
-                        onHuy={() => setThuocChoXoa(null)}
-                        onXacNhan={xoaThuocKho}
-                    />
-                    <button onClick={() => setTrang("trangchu")}>← Quay lại trang chủ</button>
-                </div>
-            </div>
-        );
-    }
     // ==========================
     // TRANG LỊCH SỬ BÁN HÀNG
     // ==========================
@@ -1707,567 +1321,125 @@ function App() {
 
         toast.success("Đã lưu toa thuốc thành công!");
     };
-    if (trang === "chitietbenhnhan" && toaDangXem) {
-        return (
-            <div>
-                <Header />
 
-                <div className="chi-tiet-benh-nhan">
-                    <div className="chi-tiet-header">
-                        <h1 className="tieu-de-xem">📋 CHI TIẾT LẦN KHÁM</h1>
-
-                        <h1 className="tieu-de-in">TOA THUỐC Y HỌC CỔ TRUYỀN</h1>
-
-                        <button className="nut-quay-lai-lich-su" onClick={() => setTrang("lichsubenhnhan")}>
-                            ← Quay lại
-                        </button>
-                    </div>
-
-                    <div className="chi-tiet-khoi">
-                        <h2>THÔNG TIN BỆNH NHÂN</h2>
-                        <div className="thong-tin-benh-nhan-grid">
-                            <p>
-                                <strong>Họ và tên:</strong> {toaDangXem.ho_ten || "---"}
-                            </p>
-
-                            <p>
-                                <strong>Năm sinh:</strong> {toaDangXem.nam_sinh || "---"}
-                            </p>
-
-                            <p>
-                                <strong>Giới tính:</strong>{" "}
-                                {toaDangXem.gioi_tinh === "nam" ? "Nam" : toaDangXem.gioi_tinh === "nu" ? "Nữ" : "---"}
-                            </p>
-
-                            <p>
-                                <strong>Số điện thoại:</strong> {toaDangXem.so_dien_thoai || "---"}
-                            </p>
-
-                            <p>
-                                <strong>Địa chỉ:</strong> {toaDangXem.dia_chi || "---"}
-                            </p>
-
-                            <p>
-                                <strong>Ngày khám:</strong>{" "}
-                                {new Date(toaDangXem.created_at).toLocaleString("vi-VN", {
-                                    timeZone: "Asia/Ho_Chi_Minh",
-                                })}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="chi-tiet-khoi">
-                        <h2>THÔNG TIN KHÁM BỆNH</h2>
-
-                        <p>
-                            <strong>Triệu chứng / Lý do khám:</strong>
-                            <br />
-                            {toaDangXem.trieu_chung || "---"}
-                        </p>
-
-                        <p>
-                            <strong>Tiền sử bệnh:</strong>
-                            <br />
-                            {toaDangXem.tien_su_benh || "---"}
-                        </p>
-
-                        <p>
-                            <strong>Chẩn đoán:</strong>
-                            <br />
-                            {toaDangXem.chan_doan || "---"}
-                        </p>
-
-                        <p>
-                            <strong>Chẩn đoán YHCT / Thể bệnh:</strong>
-                            <br />
-                            {toaDangXem.chan_doan_yhct || "---"}
-                        </p>
-
-                        <p>
-                            <strong>Pháp điều trị:</strong>
-                            <br />
-                            {toaDangXem.phap_dieu_tri || "---"}
-                        </p>
-                    </div>
-
-                    <div className="chi-tiet-khoi">
-                        <h2>ĐƠN THUỐC</h2>
-
-                        {!toaDangXem.danh_sach_thuoc || toaDangXem.danh_sach_thuoc.length === 0 ? (
-                            <p>Không có vị thuốc.</p>
-                        ) : (
-                            toaDangXem.danh_sach_thuoc.map((thuoc, index) => (
-                                <div className="chi-tiet-vi-thuoc" key={index}>
-                                    <span>
-                                        {index + 1}. {thuoc.ten}
-                                    </span>
-
-                                    <strong>{thuoc.soLuong}g</strong>
-                                </div>
-                            ))
-                        )}
-
-                        <p className="chi-tiet-so-thang">
-                            <strong>Số thang:</strong> {toaDangXem.so_thang || "---"}
-                        </p>
-                    </div>
-
-                    <div className="chi-tiet-khoi">
-                        <h2>CÁCH DÙNG VÀ LỜI DẶN</h2>
-
-                        <p>
-                            <strong>Cách sắc / Cách dùng:</strong>
-                            <br />
-                            {toaDangXem.cach_dung || "---"}
-                        </p>
-
-                        <p>
-                            <strong>Lời dặn:</strong>
-                            <br />
-                            {toaDangXem.loi_dan || "---"}
-                        </p>
-                    </div>
-                    <div className="chu-ky-toa">
-                        <p>
-                            Quảng Ngãi, ngày {new Date().getDate()} tháng {new Date().getMonth() + 1} năm{" "}
-                            {new Date().getFullYear()}
-                        </p>
-
-                        <strong>Người kê toa</strong>
-                        <p className="ghi-chu-ky">(Ký và ghi rõ họ tên)</p>
-
-                        <div className="khoang-ky"></div>
-
-                        <strong>AN THỜI ĐƯỜNG</strong>
-                    </div>
-                    <div className="chi-tiet-nut">
-                        <button onClick={() => window.print()}>🖨️ In toa thuốc</button>
-                        <button
-                            onClick={() => {
-                                setToaThuoc({
-                                    ho_ten: toaDangXem.ho_ten || "",
-                                    nam_sinh: toaDangXem.nam_sinh || "",
-                                    gioi_tinh: toaDangXem.gioi_tinh || "",
-                                    so_dien_thoai: toaDangXem.so_dien_thoai || "",
-                                    dia_chi: toaDangXem.dia_chi || "",
-
-                                    trieu_chung: "",
-                                    tien_su_benh: toaDangXem.tien_su_benh || "",
-                                    chan_doan: "",
-                                    chan_doan_yhct: "",
-                                    phap_dieu_tri: "",
-                                    cach_dung: "",
-                                    loi_dan: "",
-                                    so_thang: "",
-                                });
-
-                                setDanhSachViThuoc([]);
-
-                                setTrang("toathuoc");
-                            }}
-                        >
-                            🔄 Tái khám
-                        </button>
-                        <button onClick={() => setTrang("lichsubenhnhan")}>← Quay lại lịch sử</button>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-    if (trang === "lichsubenhnhan") {
-        if (!coQuyen("quyen_xem_benh_nhan")) {
-            setTrang("trangchu");
-            return null;
-        }
-        const danhSachLoc = lichSuBenhNhan.filter((benhNhan) => {
-            const tuKhoa = tuKhoaBenhNhan.toLowerCase().trim();
-
-            return (
-                (benhNhan.ho_ten || "").toLowerCase().includes(tuKhoa) ||
-                (benhNhan.so_dien_thoai || "").includes(tuKhoa)
-            );
-        });
-
-        return (
-            <div>
-                <Header />
-
-                <div className="lich-su-benh-nhan-container">
-                    <div className="lich-su-benh-nhan-header">
-                        <h1>📋 LỊCH SỬ BỆNH NHÂN</h1>
-
-                        <button className="nut-ve-toa-thuoc" onClick={() => setTrang("toathuoc")}>
-                            ← Quay lại
-                        </button>
-                    </div>
-
-                    <input
-                        className="tim-benh-nhan"
-                        type="text"
-                        placeholder="🔍 Tìm theo tên hoặc số điện thoại..."
-                        value={tuKhoaBenhNhan}
-                        onChange={(e) => setTuKhoaBenhNhan(e.target.value)}
-                    />
-
-                    {danhSachLoc.length === 0 ? (
-                        <p>Chưa có bệnh nhân nào.</p>
-                    ) : (
-                        <div className="danh-sach-benh-nhan">
-                            {danhSachLoc.map((benhNhan) => (
-                                <div className="benh-nhan-card" key={benhNhan.id}>
-                                    <div className="benh-nhan-card-top">
-                                        <div>
-                                            <h2>{benhNhan.ho_ten || "Chưa nhập họ tên"}</h2>
-
-                                            <p>📞 {benhNhan.so_dien_thoai || "Chưa có SĐT"}</p>
-                                        </div>
-
-                                        <div className="ngay-kham">
-                                            {new Date(benhNhan.created_at).toLocaleString("vi-VN", {
-                                                timeZone: "Asia/Ho_Chi_Minh",
-                                            })}
-                                        </div>
-                                    </div>
-
-                                    <div className="benh-nhan-thong-tin">
-                                        <p>
-                                            <strong>Năm sinh:</strong> {benhNhan.nam_sinh || "---"}
-                                        </p>
-
-                                        <p>
-                                            <strong>Giới tính:</strong>{" "}
-                                            {benhNhan.gioi_tinh === "nam"
-                                                ? "Nam"
-                                                : benhNhan.gioi_tinh === "nu"
-                                                  ? "Nữ"
-                                                  : "---"}
-                                        </p>
-
-                                        <p>
-                                            <strong>Chẩn đoán:</strong> {benhNhan.chan_doan || "---"}
-                                        </p>
-
-                                        <p>
-                                            <strong>Chẩn đoán YHCT:</strong> {benhNhan.chan_doan_yhct || "---"}
-                                        </p>
-
-                                        <p>
-                                            <strong>Số thang:</strong> {benhNhan.so_thang || 0}
-                                        </p>
-                                    </div>
-
-                                    <button
-                                        className="nut-xem-benh-nhan"
-                                        onClick={() => {
-                                            setToaDangXem(benhNhan);
-                                            setTrang("chitietbenhnhan");
-                                        }}
-                                    >
-                                        Xem chi tiết →
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
-            </div>
-        );
-    }
-    if (trang === "toathuoc") {
-        return (
-            <div>
-                <Header />
-
-                <div className="toa-thuoc-container">
-                    <div className="toa-thuoc-header">
-                        <h1>📄 TOA THUỐC Y HỌC CỔ TRUYỀN</h1>
-                    </div>
-
-                    <h3>THÔNG TIN BỆNH NHÂN</h3>
-
-                    <input
-                        type="text"
-                        placeholder="Họ và tên bệnh nhân"
-                        value={toaThuoc.ho_ten}
-                        onChange={(e) =>
-                            setToaThuoc({
-                                ...toaThuoc,
-                                ho_ten: e.target.value,
-                            })
-                        }
-                    />
-
-                    <div className="toa-hang-ngang">
-                        <input
-                            type="number"
-                            placeholder="Năm sinh"
-                            value={toaThuoc.nam_sinh}
-                            onChange={(e) =>
-                                setToaThuoc({
-                                    ...toaThuoc,
-                                    nam_sinh: e.target.value,
-                                })
-                            }
-                        />
-
-                        <select
-                            value={toaThuoc.gioi_tinh}
-                            onChange={(e) =>
-                                setToaThuoc({
-                                    ...toaThuoc,
-                                    gioi_tinh: e.target.value,
-                                })
-                            }
-                        >
-                            <option value="">Giới tính</option>
-                            <option value="nam">Nam</option>
-                            <option value="nu">Nữ</option>
-                        </select>
-                    </div>
-
-                    <input
-                        type="text"
-                        placeholder="Số điện thoại"
-                        value={toaThuoc.so_dien_thoai}
-                        onChange={(e) =>
-                            setToaThuoc({
-                                ...toaThuoc,
-                                so_dien_thoai: e.target.value,
-                            })
-                        }
-                    />
-
-                    <input
-                        type="text"
-                        placeholder="Địa chỉ"
-                        value={toaThuoc.dia_chi}
-                        onChange={(e) =>
-                            setToaThuoc({
-                                ...toaThuoc,
-                                dia_chi: e.target.value,
-                            })
-                        }
-                    />
-
-                    <h3>THÔNG TIN KHÁM BỆNH</h3>
-
-                    <textarea
-                        placeholder="Triệu chứng / Lý do đến khám"
-                        rows="3"
-                        value={toaThuoc.trieu_chung}
-                        onChange={(e) =>
-                            setToaThuoc({
-                                ...toaThuoc,
-                                trieu_chung: e.target.value,
-                            })
-                        }
-                    />
-
-                    <textarea
-                        placeholder="Tiền sử bệnh"
-                        rows="2"
-                        value={toaThuoc.tien_su_benh}
-                        onChange={(e) =>
-                            setToaThuoc({
-                                ...toaThuoc,
-                                tien_su_benh: e.target.value,
-                            })
-                        }
-                    />
-
-                    <textarea
-                        placeholder="Chẩn đoán"
-                        rows="2"
-                        value={toaThuoc.chan_doan}
-                        onChange={(e) =>
-                            setToaThuoc({
-                                ...toaThuoc,
-                                chan_doan: e.target.value,
-                            })
-                        }
-                    />
-
-                    <textarea
-                        placeholder="Chẩn đoán Y học cổ truyền / Thể bệnh"
-                        rows="2"
-                        value={toaThuoc.chan_doan_yhct}
-                        onChange={(e) =>
-                            setToaThuoc({
-                                ...toaThuoc,
-                                chan_doan_yhct: e.target.value,
-                            })
-                        }
-                    />
-
-                    <textarea
-                        placeholder="Pháp điều trị"
-                        rows="2"
-                        value={toaThuoc.phap_dieu_tri}
-                        onChange={(e) =>
-                            setToaThuoc({
-                                ...toaThuoc,
-                                phap_dieu_tri: e.target.value,
-                            })
-                        }
-                    />
-                    <h3>ĐƠN THUỐC</h3>
-
-                    <div className="toa-hang-ngang">
-                        <input
-                            type="text"
-                            placeholder="Tên vị thuốc"
-                            value={tenViThuoc}
-                            onChange={(e) => setTenViThuoc(e.target.value)}
-                        />
-
-                        <input
-                            type="number"
-                            placeholder="Số lượng (g)"
-                            value={soLuongViThuoc}
-                            onChange={(e) => setSoLuongViThuoc(e.target.value)}
-                        />
-                    </div>
-                    <button onClick={themViThuocVaoToa}>➕ Thêm vị thuốc</button>
-
-                    <div className="danh-sach-toa">
-                        {danhSachViThuoc.length === 0 ? (
-                            <p>Chưa có vị thuốc nào trong toa.</p>
-                        ) : (
-                            danhSachViThuoc.map((thuoc, index) => (
-                                <div className="toa-thuoc-item" key={index}>
-                                    <span>
-                                        {index + 1}. <strong>{thuoc.ten}</strong> — {thuoc.soLuong}g
-                                    </span>
-
-                                    <button
-                                        onClick={() =>
-                                            setDanhSachViThuoc(danhSachViThuoc.filter((_, i) => i !== index))
-                                        }
-                                    >
-                                        ❌
-                                    </button>
-                                </div>
-                            ))
-                        )}
-                    </div>
-
-                    <h3>CÁCH DÙNG VÀ LỜI DẶN</h3>
-
-                    <textarea
-                        placeholder="Cách sắc thuốc / Cách dùng"
-                        rows="3"
-                        value={toaThuoc.cach_dung}
-                        onChange={(e) =>
-                            setToaThuoc({
-                                ...toaThuoc,
-                                cach_dung: e.target.value,
-                            })
-                        }
-                    />
-
-                    <textarea
-                        placeholder="Lời dặn bệnh nhân"
-                        rows="3"
-                        value={toaThuoc.loi_dan}
-                        onChange={(e) =>
-                            setToaThuoc({
-                                ...toaThuoc,
-                                loi_dan: e.target.value,
-                            })
-                        }
-                    />
-
-                    <input
-                        type="number"
-                        placeholder="Số thang"
-                        value={toaThuoc.so_thang}
-                        onChange={(e) =>
-                            setToaThuoc({
-                                ...toaThuoc,
-                                so_thang: e.target.value,
-                            })
-                        }
-                    />
-
-                    <div className="toa-nut-chuc-nang">
-                        <button onClick={luuToaThuoc}>💾 Lưu toa</button>
-                        <button
-                            onClick={async () => {
-                                await taiLichSuBenhNhan();
-                                setTrang("lichsubenhnhan");
-                            }}
-                        >
-                            📋 Lịch sử bệnh nhân
-                        </button>
-                        <button>🖨️ In toa thuốc</button>
-
-                        <button onClick={() => setTrang("trangchu")}>← Quay lại trang chủ</button>
-                    </div>
-                </div>
-            </div>
-        );
-    }
     // =========================
     // TRANG CHỦ
     // =========================
 
     return (
-        <div>
-            <Header />
-            <button className="btn-phieu-cham-cuu" onClick={() => setTrang("phieuchamcuu")}>
-                🖨️ Phiếu châm cứu
-            </button>
-            <div className="container">
-                <h1>🏥 QUẢN LÝ THUỐC BẮC</h1>
+        <div className="desktop-layout">
+            <Sidebar
+                trang={trang}
+                setTrang={setTrang}
+                user={user}
+                taiLichSuBenhNhan={taiLichSuBenhNhan}
+                taiThongKe={taiThongKe}
+                taiDuLieuBieuDo={taiDuLieuBieuDo}
+                setKieuThongKe={setKieuThongKe}
+                setUser={setUser}
+            />
 
-                {(user?.vai_tro === "admin" || user?.quyen_ban_thuoc) && (
-                    <button onClick={() => setTrang("banhang")}>💰 Bán hàng</button>
+            <div className="desktop-content">
+                {trang === "trangchu" && <TrangChu user={user} setTrang={setTrang} />}
+                {trang === "banhang" && (
+                    <BanHang
+                        tuKhoa={tuKhoa}
+                        setTuKhoa={setTuKhoa}
+                        thuocGoiY={thuocGoiY}
+                        thuocDangChon={thuocDangChon}
+                        setThuocDangChon={setThuocDangChon}
+                        chonThuoc={chonThuoc}
+                        soLuong={soLuong}
+                        setSoLuong={setSoLuong}
+                        soTienMua={soTienMua}
+                        setSoTienMua={setSoTienMua}
+                        themVaoDon={themVaoDon}
+                        resetBanHang={resetBanHang}
+                        gioHang={gioHang}
+                        xoaThuoc={xoaThuoc}
+                        tongTien={tongTien}
+                        thanhToan={thanhToan}
+                        taiLichSuBanHang={taiLichSuBanHang}
+                        setTrang={setTrang}
+                    />
                 )}
-
-                {(laAdmin || user?.quyen_kho_thuoc === true) && (
-                    <button onClick={() => setTrang("khothuoc")}>📦 Kho thuốc</button>
+                {trang === "khothuoc" && (
+                    <KhoThuoc
+                        user={user}
+                        setTrang={setTrang}
+                        laAdmin={laAdmin}
+                        tenThuocMoi={tenThuocMoi}
+                        setTenThuocMoi={setTenThuocMoi}
+                        giaThuocMoi={giaThuocMoi}
+                        setGiaThuocMoi={setGiaThuocMoi}
+                        tonKhoMoi={tonKhoMoi}
+                        setTonKhoMoi={setTonKhoMoi}
+                        themThuocMoi={themThuocMoi}
+                        tuKhoaKho={tuKhoaKho}
+                        setTuKhoaKho={setTuKhoaKho}
+                        danhSachThuocTrongKho={danhSachThuocTrongKho}
+                        thuocDangSua={thuocDangSua}
+                        setThuocDangSua={setThuocDangSua}
+                        tenThuocSua={tenThuocSua}
+                        setTenThuocSua={setTenThuocSua}
+                        giaThuocSua={giaThuocSua}
+                        setGiaThuocSua={setGiaThuocSua}
+                        tonKhoSua={tonKhoSua}
+                        setTonKhoSua={setTonKhoSua}
+                        batDauSuaThuoc={batDauSuaThuoc}
+                        luuSuaThuoc={luuSuaThuoc}
+                        huySuaThuoc={huySuaThuoc}
+                        setThuocChoXoa={setThuocChoXoa}
+                        thuocChoXoa={thuocChoXoa}
+                        xoaThuocKho={xoaThuocKho}
+                    />
                 )}
-
-                {(user?.vai_tro === "admin" || user?.quyen_xem_benh_nhan) && (
-                    <button
-                        onClick={async () => {
-                            await taiLichSuBenhNhan();
-                            setTrang("lichsubenhnhan");
-                        }}
-                    >
-                        👨‍⚕️ Bệnh nhân
-                    </button>
+                {trang === "benhnhan" && (
+                    <BenhNhan
+                        user={user}
+                        setTrang={setTrang}
+                        lichSuBenhNhan={lichSuBenhNhan}
+                        tuKhoaBenhNhan={tuKhoaBenhNhan}
+                        setTuKhoaBenhNhan={setTuKhoaBenhNhan}
+                        setToaDangXem={setToaDangXem}
+                        coQuyen={coQuyen}
+                    />
                 )}
-
-                {user?.vai_tro === "admin" && <button onClick={() => setTrang("toathuoc")}>📄 Toa thuốc</button>}
-
-                {user?.vai_tro === "admin" && (
-                    <button
-                        onClick={async () => {
-                            await taiThongKe();
-                            await taiDuLieuBieuDo("tuan");
-
-                            setKieuThongKe("tuan");
-                            setTrang("thongke");
-                        }}
-                    >
-                        📊 Thống kê
-                    </button>
+                {trang === "chitietbenhnhan" && (
+                    <ChiTietBenhNhan
+                        toaDangXem={toaDangXem}
+                        setTrang={setTrang}
+                        setToaThuoc={setToaThuoc}
+                        setDanhSachViThuoc={setDanhSachViThuoc}
+                    />
                 )}
-                {user?.vai_tro === "admin" && (
-                    <button onClick={() => setTrang("quanlynhanvien")}>👥 Quản lý nhân viên</button>
+                {trang === "taikham" && (
+                    <TaiKham
+                        toaDangXem={toaDangXem}
+                        setToaThuoc={setToaThuoc}
+                        setDanhSachViThuoc={setDanhSachViThuoc}
+                        setTrang={setTrang}
+                    />
                 )}
-            </div>
-
-            <div className="thanh-tai-khoan">
-                <NutDangXuat setUser={setUser} />
-
-                <div className="thong-tin-tai-khoan">
-                    👤{" "}
-                    {user?.vai_tro === "admin"
-                        ? "Chủ phòng – " + (user?.ten_dang_nhap || "")
-                        : "Nhân viên – " + (user?.ten_dang_nhap || "")}
-                </div>
+                {trang === "toathuoc" && (
+                    <ToaThuoc
+                        toaThuoc={toaThuoc}
+                        setToaThuoc={setToaThuoc}
+                        tenViThuoc={tenViThuoc}
+                        setTenViThuoc={setTenViThuoc}
+                        soLuongViThuoc={soLuongViThuoc}
+                        setSoLuongViThuoc={setSoLuongViThuoc}
+                        themViThuocVaoToa={themViThuocVaoToa}
+                        danhSachViThuoc={danhSachViThuoc}
+                        setDanhSachViThuoc={setDanhSachViThuoc}
+                        luuToaThuoc={luuToaThuoc}
+                        taiLichSuBenhNhan={taiLichSuBenhNhan}
+                        setTrang={setTrang}
+                    />
+                )}
+                {trang === "quanlynhanvien" && (
+                    <QuanLyNhanVien setTrang={setTrang} taiDanhSachNhanVien={taiDanhSachNhanVien} />
+                )}
             </div>
         </div>
     );

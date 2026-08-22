@@ -1,0 +1,154 @@
+.trang-chu {
+    max-width: 100%;
+    box-sizing: border-box;
+    min-height: calc(100vh - 80px);
+    padding: 40px 50px;
+    box-sizing: border-box;
+    background: #f5f7f6;
+}
+
+/* ===== PHẦN ĐẦU ===== */
+
+.trang-chu-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 35px;
+}
+
+.trang-chu-header h1 {
+    margin: 0 0 8px;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.trang-chu-header p {
+    margin: 0;
+    font-size: 17px;
+    color: #666;
+}
+
+.trang-chu-welcome {
+    padding: 12px 20px;
+    background: white;
+    border-radius: 12px;
+    font-size: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* ===== CÁC Ô THỐNG KÊ ===== */
+
+.trang-chu-noi-dung {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.trang-chu-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 120px;
+    padding: 22px;
+    background: white;
+    border-radius: 16px;
+    box-sizing: border-box;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+.card-icon {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 14px;
+    background: #f0f4f1;
+    font-size: 27px;
+}
+
+.trang-chu-card span {
+    display: block;
+    margin-bottom: 8px;
+    color: #777;
+    font-size: 14px;
+}
+
+.trang-chu-card strong {
+    display: block;
+    font-size: 24px;
+}
+
+/* ===== PHẦN GIỚI THIỆU ===== */
+
+.trang-chu-gioi-thieu {
+    padding: 35px;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+.trang-chu-gioi-thieu h2 {
+    margin: 0 0 15px;
+    font-size: 24px;
+}
+
+.trang-chu-gioi-thieu p {
+    margin: 0;
+    color: #666;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+.trang-chu-dich-vu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.trang-chu-dich-vu span {
+    padding: 10px 16px;
+    background: #f3f6f4;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+/* ===== ĐIỆN THOẠI ===== */
+
+@media (max-width: 768px) {
+    .trang-chu {
+        padding: 20px 15px;
+    }
+
+    .trang-chu-header {
+        display: block;
+    }
+
+    .trang-chu-header h1 {
+        font-size: 25px;
+    }
+
+    .trang-chu-welcome {
+        margin-top: 20px;
+    }
+
+    .trang-chu-noi-dung {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .trang-chu-card {
+        padding: 15px;
+    }
+
+    .trang-chu-card strong {
+        font-size: 20px;
+    }
+
+    .trang-chu-gioi-thieu {
+        padding: 22px;
+    }
+}
