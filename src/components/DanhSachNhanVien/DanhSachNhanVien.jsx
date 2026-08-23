@@ -142,15 +142,6 @@ function DanhSachNhanVien({
                             />
                             Xóa thuốc
                         </label>
-
-                        <label>
-                            <input
-                                type="checkbox"
-                                checked={quyenSuaGiaSua}
-                                onChange={(e) => setQuyenSuaGiaSua(e.target.checked)}
-                            />
-                            Sửa giá thuốc
-                        </label>
                     </div>
 
                     <div className="nut-sua-nhan-vien">

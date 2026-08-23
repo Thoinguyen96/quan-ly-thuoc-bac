@@ -165,11 +165,6 @@ function TaoNhanVien() {
                     />
                     Xóa thuốc
                 </label>
-
-                <label>
-                    <input type="checkbox" checked={quyenSuaGia} onChange={(e) => setQuyenSuaGia(e.target.checked)} />
-                    Sửa giá thuốc
-                </label>
             </div>
 
             <button className="nut-tao-nhan-vien" onClick={taoNhanVien} disabled={dangTao}>

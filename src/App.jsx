@@ -71,6 +71,11 @@ function App() {
     };
 
     const coQuyenKhoThuoc = laAdmin || user?.quyen_kho_thuoc === true;
+    const coQuyenThemThuoc = laAdmin || user?.quyen_them_thuoc === true;
+
+    const coQuyenSuaThuoc = laAdmin || user?.quyen_sua_thuoc === true;
+
+    const coQuyenXoaThuoc = laAdmin || user?.quyen_xoa_thuoc === true;
     useEffect(() => {
         const layDanhSachThuoc = async () => {
             const { data, error } = await supabase.from("thuoc").select("*").order("id", { ascending: true });
@@ -227,17 +232,12 @@ function App() {
             return;
         }
 
-        console.log("UID đăng nhập:", data.user.id);
-
         // Lấy thông tin nhân viên theo UID
         const { data: nhanVien, error: nvError } = await supabase
             .from("nhan_vien")
             .select("*")
             .eq("id", data.user.id)
             .maybeSingle();
-
-        console.log("Nhân viên:", nhanVien);
-        console.log("Lỗi nhân viên:", nvError);
 
         if (nvError) {
             console.error("Lỗi lấy nhân viên:", nvError);
@@ -260,15 +260,7 @@ function App() {
         }
 
         setUser(nhanVien);
-        console.log("QUYỀN SAU ĐĂNG NHẬP:", {
-            kho: nhanVien.quyen_kho_thuoc,
-            ban: nhanVien.quyen_ban_thuoc,
-            benhNhan: nhanVien.quyen_xem_benh_nhan,
-            them: nhanVien.quyen_them_thuoc,
-            sua: nhanVien.quyen_sua_thuoc,
-            xoa: nhanVien.quyen_xoa_thuoc,
-            suaGia: nhanVien.quyen_sua_gia,
-        });
+        setTrang("trangchu");
         toast.success("Đăng nhập thành công!");
     };
     const guiEmailDoiMatKhau = async () => {
@@ -1245,6 +1237,10 @@ function App() {
                         setThuocChoXoa={setThuocChoXoa}
                         thuocChoXoa={thuocChoXoa}
                         xoaThuocKho={xoaThuocKho}
+                        coQuyenKhoThuoc={coQuyenKhoThuoc}
+                        coQuyenThemThuoc={coQuyenThemThuoc}
+                        coQuyenSuaThuoc={coQuyenSuaThuoc}
+                        coQuyenXoaThuoc={coQuyenXoaThuoc}
                     />
                 )}
                 {trang === "benhnhan" && (

@@ -4,6 +4,7 @@ import { toast } from "react-hot-toast";
 
 function KhoThuoc({
     user,
+    coQuyenKhoThuoc,
     setTrang,
     laAdmin,
     tenThuocMoi,
@@ -30,6 +31,9 @@ function KhoThuoc({
     setThuocChoXoa,
     thuocChoXoa,
     xoaThuocKho,
+    coQuyenThemThuoc,
+    coQuyenSuaThuoc,
+    coQuyenXoaThuoc,
 }) {
     if (!laAdmin && user?.quyen_kho_thuoc !== true) {
         toast.error("Bạn không có quyền vào kho thuốc!");
@@ -48,39 +52,41 @@ function KhoThuoc({
                     <span>Đ/Kg</span>
                     <span>Gram</span>
                 </div>
-                <div className="cang_ngang_kho_thuoc">
-                    <input
-                        className="input_chuan"
-                        type="text"
-                        placeholder="Tên thuốc"
-                        value={tenThuocMoi}
-                        onChange={(e) => setTenThuocMoi(e.target.value)}
-                    />
-                    <input
-                        className="input_chuan"
-                        type="text"
-                        placeholder="Giá bán (đ/kg)"
-                        value={giaThuocMoi ? Number(giaThuocMoi).toLocaleString("vi-VN") : ""}
-                        onChange={(e) => {
-                            const value = e.target.value.replace(/\D/g, "");
-                            setGiaThuocMoi(value);
-                        }}
-                    />
+                {coQuyenThemThuoc && (
+                    <div className="cang_ngang_kho_thuoc">
+                        <input
+                            className="input_chuan"
+                            type="text"
+                            placeholder="Tên thuốc"
+                            value={tenThuocMoi}
+                            onChange={(e) => setTenThuocMoi(e.target.value)}
+                        />
 
-                    <input
-                        className="input_chuan"
-                        type="text"
-                        placeholder="Tồn kho (gram)"
-                        value={tonKhoMoi ? Number(tonKhoMoi).toLocaleString("vi-VN") : ""}
-                        onChange={(e) => {
-                            const value = e.target.value.replace(/\D/g, "");
-                            setTonKhoMoi(value);
-                        }}
-                    />
-                </div>
+                        <input
+                            className="input_chuan"
+                            type="text"
+                            placeholder="Giá bán (đ/kg)"
+                            value={giaThuocMoi ? Number(giaThuocMoi).toLocaleString("vi-VN") : ""}
+                            onChange={(e) => {
+                                const value = e.target.value.replace(/\D/g, "");
+                                setGiaThuocMoi(value);
+                            }}
+                        />
 
-                <button onClick={themThuocMoi}>➕ Thêm thuốc vào kho</button>
+                        <input
+                            className="input_chuan"
+                            type="text"
+                            placeholder="Tồn kho (gram)"
+                            value={tonKhoMoi ? Number(tonKhoMoi).toLocaleString("vi-VN") : ""}
+                            onChange={(e) => {
+                                const value = e.target.value.replace(/\D/g, "");
+                                setTonKhoMoi(value);
+                            }}
+                        />
+                    </div>
+                )}
 
+                {coQuyenThemThuoc && <button onClick={themThuocMoi}>➕ Thêm thuốc vào kho</button>}
                 <hr />
 
                 <h2>Danh sách thuốc trong kho</h2>
@@ -156,21 +162,25 @@ function KhoThuoc({
                                     <span>{thuoc.tonKho.toLocaleString("vi-VN")}g</span>
 
                                     <div className="kho-thao-tac">
-                                        <button
-                                            className="btn-sua-thuoc"
-                                            onClick={() => batDauSuaThuoc(thuoc)}
-                                            title="Sửa thuốc"
-                                        >
-                                            ✏️
-                                        </button>
+                                        {coQuyenSuaThuoc && (
+                                            <button
+                                                className="btn-sua-thuoc"
+                                                onClick={() => batDauSuaThuoc(thuoc)}
+                                                title="Sửa thuốc"
+                                            >
+                                                ✏️
+                                            </button>
+                                        )}
 
-                                        <button
-                                            className="btn-xoa-thuoc"
-                                            onClick={() => setThuocChoXoa(thuoc)}
-                                            title="Xóa thuốc"
-                                        >
-                                            🗑️
-                                        </button>
+                                        {coQuyenXoaThuoc && (
+                                            <button
+                                                className="btn-xoa-thuoc"
+                                                onClick={() => setThuocChoXoa(thuoc)}
+                                                title="Xóa thuốc"
+                                            >
+                                                🗑️
+                                            </button>
+                                        )}
                                     </div>
                                 </>
                             )}
