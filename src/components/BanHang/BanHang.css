@@ -1,0 +1,28 @@
+.button_banhang {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    font-size: 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #1976d2;
+    color: white;
+}
+
+.nen_ban_hang h1 {
+    margin: 0;
+    padding: 30px 0;
+    text-align: center;
+}
+
+.wrap_tim_ten_thuoc {
+    position: relative; /* cha làm mốc */
+}
+
+.nhan_tenthuoc {
+    position: absolute; /* con bám theo cha */
+    left: 16px;
+    top: 15%;
+    transform: translateY(-50%);
+}

@@ -11,7 +11,7 @@ function Sidebar({ trang, setTrang, user, taiLichSuBenhNhan, taiThongKe, taiDuLi
     return (
         <aside className="sidebar">
             {/* Tiêu đề */}
-            <div className="sidebar-title">
+            <div className="sidebar-title" onClick={() => vaoTrang("trangchu")}>
                 <div className="sidebar-title-icon">
                     <LogoAnThoiDuong />
                 </div>
@@ -71,7 +71,20 @@ function Sidebar({ trang, setTrang, user, taiLichSuBenhNhan, taiThongKe, taiDuLi
                         <span>Toa thuốc</span>
                     </button>
                 )}
-
+                {/* Quản lý nhân viên */}
+                {laAdmin && (
+                    <button
+                        className={
+                            ["quanlynhanvien", "danhsachnhanvien"].includes(trang)
+                                ? "sidebar-item active"
+                                : "sidebar-item"
+                        }
+                        onClick={() => vaoTrang("quanlynhanvien")}
+                    >
+                        <span>👥</span>
+                        <span>Quản lý nhân viên</span>
+                    </button>
+                )}
                 {/* Thống kê */}
                 {laAdmin && (
                     <button
@@ -94,17 +107,6 @@ function Sidebar({ trang, setTrang, user, taiLichSuBenhNhan, taiThongKe, taiDuLi
                     >
                         <span>📊</span>
                         <span>Thống kê</span>
-                    </button>
-                )}
-
-                {/* Quản lý nhân viên */}
-                {laAdmin && (
-                    <button
-                        className={trang === "quanlynhanvien" ? "sidebar-item active" : "sidebar-item"}
-                        onClick={() => vaoTrang("quanlynhanvien")}
-                    >
-                        <span>👥</span>
-                        <span>Quản lý nhân viên</span>
                     </button>
                 )}
             </div>

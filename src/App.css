@@ -4,16 +4,70 @@ body {
     background: #f5f7f7;
 }
 #root {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
     border-inline: none;
-    background: #f5f7f7;
+    background: linear-gradient(
+        135deg,
+        #d0415e 0%,
+        #d0415e 20%,
+        #d65767 calc(20% + 1px),
+        #d65767 40%,
+        #db7971 calc(40% + 1px),
+        #db7971 60%,
+        #e0a57c calc(60% + 1px),
+        #e0a57c 80%,
+        #e6d886 calc(80% + 1px) 100%
+    );
+}
+.cang_ngang {
+    display: flex;
+    justify-content: space-between;
+}
+.cang_ngang_gan {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    width: 100%;
+}
+.cang_doc {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.input_in_hoa {
+    text-transform: uppercase;
 }
 .container {
-    width: 500px;
-    margin: 50px auto;
     background: white;
+    height: 100%;
+    width: 500px;
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+}
+.nen_trang {
+    background: white;
+}
+.input_chuan {
+    width: 30vh;
+    height: 48px;
+    padding: 0 16px;
+    box-sizing: border-box;
+    margin: 30px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+
+    background: #ffffff;
+    color: #222;
+    font-size: 16px;
+    font-family: inherit;
+
+    outline: none;
+    transition: all 0.2s ease;
 }
 
 h1 {
@@ -24,7 +78,7 @@ h1 {
 }
 
 button {
-    width: 100%;
+    width: 30%;
     padding: 15px;
     margin: 10px 0;
     font-size: 20px;
@@ -108,10 +162,22 @@ button:hover {
     margin: 40px auto;
     align-items: flex-start;
 }
-
+.nen_trong__ {
+    background: linear-gradient(
+        135deg,
+        #d0415e 0%,
+        #d0415e 20%,
+        #d65767 calc(20% + 1px),
+        #d65767 40%,
+        #db7971 calc(40% + 1px),
+        #db7971 60%,
+        #e0a57c calc(60% + 1px),
+        #e0a57c 80%,
+        #e6d886 calc(80% + 1px) 100%
+    );
+}
 .cot-trai {
     width: 45%;
-    background: white;
     padding: 30px;
     border-radius: 12px;
     box-sizing: border-box;
@@ -120,7 +186,6 @@ button:hover {
 
 .cot-phai {
     width: 55%;
-    background: white;
     padding: 30px;
     border-radius: 12px;
     box-sizing: border-box;
@@ -181,17 +246,6 @@ button:hover {
 .tieu-de-kho {
     font-weight: bold;
     background: #f5f5f5;
-}
-.input-so-tien {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 14px 16px;
-    margin-top: 12px;
-    border: 1px solid #bbb;
-    border-radius: 6px;
-    font-size: 17px;
-    outline: none;
-    background: #fff;
 }
 
 .input-so-tien:focus {
@@ -405,7 +459,7 @@ button:hover {
 .nut-quay-lai-nhanh {
     position: fixed;
     top: 100px;
-    left: calc(50% + 300px);
+    left: calc(50% + 330px);
 
     width: 45px !important;
     height: 45px !important;
@@ -1206,19 +1260,6 @@ button:hover {
 }
 /* ===== DANH SÁCH TÀI KHOẢN ===== */
 
-.dong-tai-khoan {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-
-    padding: 12px 16px;
-    margin: 8px 0;
-
-    background: #f5f5f5;
-    border-radius: 8px;
-}
-
 .ten-tai-khoan {
     font-size: 17px;
     font-weight: 600;
@@ -1263,6 +1304,19 @@ button:hover {
     flex: 1;
     min-width: 0;
     min-height: 100vh;
+
+    background: linear-gradient(
+        135deg,
+        #2fbea1 0%,
+        #2fbea1 20%,
+        #29a898 calc(20% + 1px),
+        #29a898 40%,
+        #24868e calc(40% + 1px),
+        #24868e 60%,
+        #1f5a83 calc(60% + 1px),
+        #1f5a83 80%,
+        #192779 calc(80% + 1px) 100%
+    );
 }
 
 @media (max-width: 768px) {
@@ -1333,4 +1387,14 @@ button:hover {
         min-height: 100vh;
         box-sizing: border-box;
     }
+}
+.lich-su-wrapper {
+    width: 100%;
+}
+.nen_ban_hang {
+    width: 650px;
+    min-height: calc(100vh - 88px);
+    margin: 0 auto;
+    background: white;
+    box-sizing: border-box;
 }

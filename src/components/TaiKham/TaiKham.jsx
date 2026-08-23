@@ -43,22 +43,11 @@ function TaiKham({ toaDangXem, setToaThuoc, setDanhSachViThuoc, setTrang }) {
                     <button
                         onClick={() => {
                             setToaThuoc({
-                                ho_ten: toaDangXem.ho_ten || "",
-                                nam_sinh: toaDangXem.nam_sinh || "",
-                                gioi_tinh: toaDangXem.gioi_tinh || "",
-                                so_dien_thoai: toaDangXem.so_dien_thoai || "",
-                                dia_chi: toaDangXem.dia_chi || "",
-                                trieu_chung: "",
-                                tien_su_benh: toaDangXem.tien_su_benh || "",
-                                chan_doan: "",
-                                chan_doan_yhct: "",
-                                phap_dieu_tri: "",
-                                cach_dung: "",
-                                loi_dan: "",
-                                so_thang: "",
+                                ...toaDangXem,
                             });
+                            // Giữ danh sách vị thuốc cũ
+                            setDanhSachViThuoc(toaDangXem.danh_sach_thuoc || []);
 
-                            setDanhSachViThuoc([]);
                             setTrang("toathuoc");
                         }}
                     >

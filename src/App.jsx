@@ -17,6 +17,8 @@ import ChiTietBenhNhan from "./components/ChiTietBenhNhan/ChiTietBenhNhan";
 import QuanLyNhanVien from "./components/QuanLyNhanVien/QuanLyNhanVien";
 import ToaThuoc from "./components/ToaThuoc/ToaThuoc";
 import TaiKham from "./components/TaiKham/TaiKham";
+import DanhSachNhanVien from "./components/DanhSachNhanVien/DanhSachNhanVien";
+import DangNhap from "./components/DangNhap/DangNhap";
 function Header() {
     return (
         <div className="header-thoi-an">
@@ -41,7 +43,6 @@ function App() {
     const [tuKhoaKho, setTuKhoaKho] = useState("");
     const [danhSachThuoc, setDanhSachThuoc] = useState([]);
     const [danhSachNhanVien, setDanhSachNhanVien] = useState([]);
-
     // =========================
     // KIỂM TRA QUYỀN NHÂN VIÊN
     // =========================
@@ -161,6 +162,7 @@ function App() {
         cach_dung: "",
         loi_dan: "",
         so_thang: "",
+        thuoc: [],
     });
 
     const [tenViThuoc, setTenViThuoc] = useState("");
@@ -702,37 +704,14 @@ function App() {
     }
     if (!user) {
         return (
-            <div>
-                <Header />
-                <div className="container">
-                    <h1>🔐 ĐĂNG NHẬP</h1>
-
-                    <input
-                        type="text"
-                        placeholder="Tên đăng nhập"
-                        value={tenDangNhap}
-                        onChange={(e) => setTenDangNhap(e.target.value)}
-                        autoComplete="username"
-                    />
-
-                    <input
-                        type="password"
-                        placeholder="Mật khẩu"
-                        value={matKhau}
-                        onChange={(e) => setMatKhau(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                                dangNhap();
-                            }
-                        }}
-                    />
-
-                    <button onClick={dangNhap}>🔑 Đăng nhập</button>
-                    <button type="button" className="btn-doi-mat-khau" onClick={guiEmailDoiMatKhau}>
-                        Đổi mật khẩu
-                    </button>
-                </div>
-            </div>
+            <DangNhap
+                tenDangNhap={tenDangNhap}
+                setTenDangNhap={setTenDangNhap}
+                matKhau={matKhau}
+                setMatKhau={setMatKhau}
+                dangNhap={dangNhap}
+                guiEmailDoiMatKhau={guiEmailDoiMatKhau}
+            />
         );
     }
     const taiLichSuBenhNhan = async () => {
@@ -1094,141 +1073,6 @@ function App() {
         );
     }
 
-    if (trang === "danhsachnhanvien") {
-        return (
-            <div>
-                <Header />
-
-                <div className="container">
-                    <button onClick={() => setTrang("quanlynhanvien")}>← Quay lại</button>
-
-                    <h1>📋 Danh sách tài khoản nhân viên</h1>
-                    {danhSachNhanVien
-                        .filter((nv) => nv.vai_tro !== "admin")
-                        .map((nv) => (
-                            <div className="dong-tai-khoan" key={nv.id}>
-                                <div className="ten-tai-khoan">👤 {nv.ten_dang_nhap}</div>
-
-                                <div className="nhom-nut-tai-khoan">
-                                    <button onClick={() => setNhanVienCanSua(nv)}>✏️ Sửa</button>
-
-                                    <button className="nut-xoa-tai-khoan" onClick={() => setNhanVienCanXoa(nv)}>
-                                        🗑️ Xóa
-                                    </button>
-                                </div>
-                            </div>
-                        ))}
-                    {nhanVienCanSua && (
-                        <div className="popup-sua-nhan-vien">
-                            <h2>✏️ Sửa tài khoản nhân viên</h2>
-
-                            <input
-                                type="text"
-                                placeholder="Tên đăng nhập"
-                                value={tenDangNhapSua}
-                                onChange={(e) => setTenDangNhapSua(e.target.value)}
-                            />
-
-                            <input
-                                type="text"
-                                placeholder="Họ tên nhân viên"
-                                value={hoTenSua}
-                                onChange={(e) => setHoTenSua(e.target.value)}
-                            />
-
-                            <input
-                                type="password"
-                                placeholder="Mật khẩu mới (để trống nếu không đổi)"
-                                value={matKhauSua}
-                                onChange={(e) => setMatKhauSua(e.target.value)}
-                            />
-
-                            <h3>Quyền nhân viên</h3>
-
-                            <div className="quyen-nhan-vien">
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        checked={quyenKhoThuocSua}
-                                        onChange={(e) => setQuyenKhoThuocSua(e.target.checked)}
-                                    />
-                                    Cho phép vào kho thuốc
-                                </label>
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        checked={quyenBanThuocSua}
-                                        onChange={(e) => setQuyenBanThuocSua(e.target.checked)}
-                                    />
-                                    Bán hàng
-                                </label>
-
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        checked={quyenXemBenhNhanSua}
-                                        onChange={(e) => setQuyenXemBenhNhanSua(e.target.checked)}
-                                    />
-                                    Xem bệnh nhân
-                                </label>
-
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        checked={quyenThemThuocSua}
-                                        onChange={(e) => setQuyenThemThuocSua(e.target.checked)}
-                                    />
-                                    Thêm thuốc
-                                </label>
-
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        checked={quyenSuaThuocSua}
-                                        onChange={(e) => setQuyenSuaThuocSua(e.target.checked)}
-                                    />
-                                    Sửa thuốc
-                                </label>
-
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        checked={quyenXoaThuocSua}
-                                        onChange={(e) => setQuyenXoaThuocSua(e.target.checked)}
-                                    />
-                                    Xóa thuốc
-                                </label>
-
-                                <label>
-                                    <input
-                                        type="checkbox"
-                                        checked={quyenSuaGiaSua}
-                                        onChange={(e) => setQuyenSuaGiaSua(e.target.checked)}
-                                    />
-                                    Sửa giá thuốc
-                                </label>
-                            </div>
-
-                            <div className="nut-sua-nhan-vien">
-                                <button onClick={() => setNhanVienCanSua(null)}>Hủy</button>
-
-                                <button onClick={luuSuaNhanVien}>Lưu thay đổi</button>
-                            </div>
-                        </div>
-                    )}
-                    <PopupXacNhan
-                        mo={!!nhanVienCanXoa}
-                        tieuDe="Xóa tài khoản nhân viên"
-                        noiDung={`Anh có chắc muốn xóa tài khoản "${nhanVienCanXoa?.ten_dang_nhap}" không?`}
-                        chuNutXacNhan="Xóa"
-                        onHuy={() => setNhanVienCanXoa(null)}
-                        onXacNhan={xoaNhanVien}
-                    />
-                </div>
-            </div>
-        );
-    }
-
     // =========================
     // TRANG KHO THUỐC
     // =========================
@@ -1243,14 +1087,13 @@ function App() {
             return null;
         }
         return (
-            <div>
+            <div className="lich-su-wrapper">
                 <Header />
                 <button className="nut-quay-lai-nhanh" onClick={() => setTrang("banhang")}>
                     ←
                 </button>
-                <div className="container">
+                <div className="nen_ban_hang">
                     <h1>🧾 LỊCH SỬ BÁN HÀNG</h1>
-
                     {lichSuBanHang.length === 0 ? (
                         <p>Chưa có lịch sử bán hàng.</p>
                     ) : (
@@ -1277,7 +1120,6 @@ function App() {
                             </div>
                         ))
                     )}
-
                     {coQuyen("quyen_ban_thuoc") && <button onClick={() => setTrang("banhang")}>💰 Bán hàng</button>}
                     {coQuyen("quyen_kho_thuoc") && <button onClick={() => setTrang("khothuoc")}>💊 Kho thuốc</button>}
                 </div>
@@ -1305,10 +1147,22 @@ function App() {
     // TRANG TOA THUỐC YHCT
     // ==========================
     const luuToaThuoc = async () => {
+        console.log("===== TRƯỚC KHI LƯU =====");
+        console.log("TOA THUỐC:", toaThuoc);
         const { error } = await supabase.from("toa_thuoc").insert([
             {
-                ...toaThuoc,
-                nam_sinh: toaThuoc.nam_sinh ? Number(toaThuoc.nam_sinh) : null,
+                ho_ten: toaThuoc.ho_ten,
+                nam_sinh: toaThuoc.nam_sinh || null,
+                gioi_tinh: toaThuoc.gioi_tinh,
+                so_dien_thoai: toaThuoc.so_dien_thoai,
+                dia_chi: toaThuoc.dia_chi,
+                trieu_chung: toaThuoc.trieu_chung,
+                tien_su_benh: toaThuoc.tien_su_benh,
+                chan_doan: toaThuoc.chan_doan,
+                chan_doan_yhct: toaThuoc.chan_doan_yhct,
+                phap_dieu_tri: toaThuoc.phap_dieu_tri,
+                cach_dung: toaThuoc.cach_dung,
+                loi_dan: toaThuoc.loi_dan,
                 so_thang: toaThuoc.so_thang ? Number(toaThuoc.so_thang) : null,
                 danh_sach_thuoc: danhSachViThuoc,
             },
@@ -1321,7 +1175,6 @@ function App() {
 
         toast.success("Đã lưu toa thuốc thành công!");
     };
-
     // =========================
     // TRANG CHỦ
     // =========================
@@ -1422,23 +1275,60 @@ function App() {
                     />
                 )}
                 {trang === "toathuoc" && (
-                    <ToaThuoc
-                        toaThuoc={toaThuoc}
-                        setToaThuoc={setToaThuoc}
-                        tenViThuoc={tenViThuoc}
-                        setTenViThuoc={setTenViThuoc}
-                        soLuongViThuoc={soLuongViThuoc}
-                        setSoLuongViThuoc={setSoLuongViThuoc}
-                        themViThuocVaoToa={themViThuocVaoToa}
-                        danhSachViThuoc={danhSachViThuoc}
-                        setDanhSachViThuoc={setDanhSachViThuoc}
-                        luuToaThuoc={luuToaThuoc}
-                        taiLichSuBenhNhan={taiLichSuBenhNhan}
-                        setTrang={setTrang}
-                    />
+                    <>
+                        {console.log("APP - TOA THUỐC:", toaThuoc)}
+
+                        <ToaThuoc
+                            toaThuoc={toaThuoc}
+                            setToaThuoc={setToaThuoc}
+                            tenViThuoc={tenViThuoc}
+                            setTenViThuoc={setTenViThuoc}
+                            soLuongViThuoc={soLuongViThuoc}
+                            setSoLuongViThuoc={setSoLuongViThuoc}
+                            themViThuocVaoToa={themViThuocVaoToa}
+                            danhSachViThuoc={danhSachViThuoc}
+                            setDanhSachViThuoc={setDanhSachViThuoc}
+                            luuToaThuoc={luuToaThuoc}
+                            taiLichSuBenhNhan={taiLichSuBenhNhan}
+                            setTrang={setTrang}
+                        />
+                    </>
                 )}
                 {trang === "quanlynhanvien" && (
                     <QuanLyNhanVien setTrang={setTrang} taiDanhSachNhanVien={taiDanhSachNhanVien} />
+                )}
+                {trang === "danhsachnhanvien" && (
+                    <DanhSachNhanVien
+                        danhSachNhanVien={danhSachNhanVien}
+                        setTrang={setTrang}
+                        setNhanVienCanSua={setNhanVienCanSua}
+                        nhanVienCanSua={nhanVienCanSua}
+                        tenDangNhapSua={tenDangNhapSua}
+                        setTenDangNhapSua={setTenDangNhapSua}
+                        hoTenSua={hoTenSua}
+                        setHoTenSua={setHoTenSua}
+                        matKhauSua={matKhauSua}
+                        setMatKhauSua={setMatKhauSua}
+                        quyenKhoThuocSua={quyenKhoThuocSua}
+                        setQuyenKhoThuocSua={setQuyenKhoThuocSua}
+                        quyenBanThuocSua={quyenBanThuocSua}
+                        setQuyenBanThuocSua={setQuyenBanThuocSua}
+                        quyenXemBenhNhanSua={quyenXemBenhNhanSua}
+                        setQuyenXemBenhNhanSua={setQuyenXemBenhNhanSua}
+                        quyenThemThuocSua={quyenThemThuocSua}
+                        setQuyenThemThuocSua={setQuyenThemThuocSua}
+                        quyenSuaThuocSua={quyenSuaThuocSua}
+                        setQuyenSuaThuocSua={setQuyenSuaThuocSua}
+                        quyenXoaThuocSua={quyenXoaThuocSua}
+                        setQuyenXoaThuocSua={setQuyenXoaThuocSua}
+                        quyenSuaGiaSua={quyenSuaGiaSua}
+                        setQuyenSuaGiaSua={setQuyenSuaGiaSua}
+                        luuSuaNhanVien={luuSuaNhanVien}
+                        nhanVienCanXoa={nhanVienCanXoa}
+                        setNhanVienCanXoa={setNhanVienCanXoa}
+                        xoaNhanVien={xoaNhanVien}
+                        PopupXacNhan={PopupXacNhan}
+                    />
                 )}
             </div>
         </div>

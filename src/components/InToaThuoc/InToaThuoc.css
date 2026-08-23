@@ -1,0 +1,165 @@
+.phieu-in-toa {
+    width: 700px;
+    min-height: 1000px;
+    margin: auto;
+    padding: 40px 50px;
+    box-sizing: border-box;
+
+    background: white;
+    color: #222;
+
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.phieu-in-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.phieu-in-header h1 {
+    font-size: 22px;
+}
+
+.phieu-in-toa h3 {
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 8px;
+    margin-top: 20px;
+}
+
+.thong-tin-benh-nhan {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 35px;
+    row-gap: 6px;
+
+    text-align: left;
+}
+
+.thong-tin-kham {
+    text-align: left;
+}
+
+.thong-tin-kham p {
+    margin: 3px 0;
+    line-height: 1.4;
+}
+
+.thong-tin-kham p strong {
+    display: inline;
+}
+
+.dong-thuoc {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.chu-ky {
+    text-align: center;
+    margin-top: 60px;
+}
+
+.ten-phong {
+    text-align: center;
+    margin-top: 70px;
+    font-weight: bold;
+}
+@media screen {
+    .phieu-in-toa {
+        display: none;
+    }
+}
+
+@media print {
+    .phieu-in-toa {
+        display: block !important;
+        visibility: visible !important;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+
+    .phieu-in-toa * {
+        visibility: visible !important;
+    }
+
+    body * {
+        visibility: hidden;
+    }
+}
+.cach-dung-loi-dan {
+    text-align: left;
+    margin-top: 10px;
+}
+
+.cach-dung-loi-dan p {
+    margin: 6px 0;
+    line-height: 1.5;
+}
+
+.cach-dung-loi-dan strong {
+    display: inline;
+}
+.danh-sach-thuoc {
+    width: 100%;
+    margin-top: 8px;
+    margin-bottom: 15px;
+}
+
+.dong-thuoc {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 6px 4px;
+
+    border-bottom: 1px solid #ddd;
+
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.dong-thuoc span:first-child {
+    text-align: left;
+}
+
+.dong-thuoc span:last-child {
+    text-align: right;
+    min-width: 55px;
+    font-weight: 600;
+}
+.bang-don-thuoc {
+    width: 100%;
+    margin: 8px 0 20px;
+    font-size: 13px;
+}
+
+.hang-thuoc {
+    display: grid;
+    grid-template-columns: 12% 1fr 15%;
+    align-items: center;
+    min-height: 40px;
+    border-bottom: 1px solid #ddd;
+}
+
+.hang-tieu-de {
+    font-weight: bold;
+    border-bottom: 1px solid #aaa;
+    min-height: 35px;
+}
+
+.hang-thuoc span:nth-child(1) {
+    text-align: left;
+}
+
+.hang-thuoc span:nth-child(2) {
+    text-align: left;
+}
+
+.hang-thuoc span:nth-child(3) {
+    text-align: right;
+}

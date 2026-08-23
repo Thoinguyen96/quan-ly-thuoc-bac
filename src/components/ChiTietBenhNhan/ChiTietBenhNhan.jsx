@@ -1,3 +1,4 @@
+import InToaThuoc from "../InToaThuoc/InToaThuoc";
 function ChiTietBenhNhan({ toaDangXem, setTrang, setToaThuoc, setDanhSachViThuoc }) {
     if (!toaDangXem) {
         return null;
@@ -138,7 +139,6 @@ function ChiTietBenhNhan({ toaDangXem, setTrang, setToaThuoc, setDanhSachViThuoc
 
             <div className="chi-tiet-nut">
                 <button onClick={() => window.print()}>🖨️ In toa thuốc</button>
-
                 <button
                     onClick={() => {
                         setToaThuoc({
@@ -147,14 +147,15 @@ function ChiTietBenhNhan({ toaDangXem, setTrang, setToaThuoc, setDanhSachViThuoc
                             gioi_tinh: toaDangXem.gioi_tinh || "",
                             so_dien_thoai: toaDangXem.so_dien_thoai || "",
                             dia_chi: toaDangXem.dia_chi || "",
-                            trieu_chung: "",
+
+                            trieu_chung: toaDangXem.trieu_chung || "",
                             tien_su_benh: toaDangXem.tien_su_benh || "",
-                            chan_doan: "",
-                            chan_doan_yhct: "",
-                            phap_dieu_tri: "",
-                            cach_dung: "",
-                            loi_dan: "",
-                            so_thang: "",
+                            chan_doan: toaDangXem.chan_doan || "",
+                            chan_doan_yhct: toaDangXem.chan_doan_yhct || "",
+                            phap_dieu_tri: toaDangXem.phap_dieu_tri || "",
+                            cach_dung: toaDangXem.cach_dung || "",
+                            loi_dan: toaDangXem.loi_dan || "",
+                            so_thang: toaDangXem.so_thang || "",
                         });
 
                         setDanhSachViThuoc([]);
@@ -166,6 +167,7 @@ function ChiTietBenhNhan({ toaDangXem, setTrang, setToaThuoc, setDanhSachViThuoc
 
                 <button onClick={() => setTrang("benhnhan")}>← Quay lại bệnh nhân</button>
             </div>
+            <InToaThuoc toaThuoc={toaDangXem} danhSachViThuoc={toaDangXem?.danh_sach_thuoc || []} />
         </div>
     );
 }

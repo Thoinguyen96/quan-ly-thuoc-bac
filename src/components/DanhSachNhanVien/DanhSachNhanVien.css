@@ -1,0 +1,23 @@
+.dong-tai-khoan {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 12px 16px;
+    margin: 8px 0px;
+    background: #f5f5f5;
+    border-radius: 8px;
+}
+.danh-sach-nhan-vien {
+    width: 50%;
+    margin: 0 auto;
+}
+.popup-sua-nhan-vien {
+    background: white;
+    border-radius: 8px;
+}
+.nut-sua-nhan-vien {
+    justify-content: center;
+    display: flex;
+    gap: 5px;
+}

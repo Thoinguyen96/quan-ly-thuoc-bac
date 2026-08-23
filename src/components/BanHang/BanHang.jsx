@@ -26,7 +26,7 @@ function BanHang({
             {/* CỘT TRÁI */}
             {/* ===================== */}
 
-            <div className="cot-trai">
+            <div className="cot-trai nen_trang">
                 <button className="btn-reset" onClick={resetBanHang}>
                     ↻
                 </button>
@@ -35,117 +35,134 @@ function BanHang({
 
                 {/* TÌM THUỐC */}
 
-                <div style={{ position: "relative" }}>
-                    <input
-                        type="text"
-                        placeholder="🔍 Tìm tên thuốc..."
-                        value={tuKhoa}
-                        onChange={(e) => {
-                            setTuKhoa(e.target.value);
-                            setThuocDangChon(null);
-                        }}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter" && thuocGoiY.length > 0) {
-                                chonThuoc(thuocGoiY[0]);
-                            }
-                        }}
-                    />
+                <div className="cang_doc">
+                    <div style={{ position: "relative" }}>
+                        <div className="wrap_tim_ten_thuoc">
+                            <input
+                                className="input_chuan"
+                                type="text"
+                                placeholder="🔍 Tìm tên thuốc..."
+                                value={tuKhoa}
+                                onChange={(e) => {
+                                    setTuKhoa(e.target.value);
+                                    setThuocDangChon(null);
+                                }}
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter" && thuocGoiY.length > 0) {
+                                        chonThuoc(thuocGoiY[0]);
+                                    }
+                                }}
+                            />
 
-                    {/* GỢI Ý THUỐC */}
+                            <span className="nhan_tenthuoc">Tìm tên thuốc</span>
+                        </div>
 
-                    {tuKhoa && !thuocDangChon && (
-                        <div className="goi-y-thuoc">
-                            {thuocGoiY.length > 0 ? (
-                                thuocGoiY.map((thuoc) => (
-                                    <div key={thuoc.id} className="goi-y-item" onClick={() => chonThuoc(thuoc)}>
-                                        <strong>{thuoc.ten}</strong>
-                                        {" — "}
-                                        {thuoc.gia.toLocaleString("vi-VN")}
-                                        đ/kg
-                                    </div>
-                                ))
-                            ) : (
-                                <div className="khong-co-thuoc">Không tìm thấy thuốc</div>
-                            )}
+                        {/* GỢI Ý THUỐC */}
+
+                        {tuKhoa && !thuocDangChon && (
+                            <div className="goi-y-thuoc">
+                                {thuocGoiY.length > 0 ? (
+                                    thuocGoiY.map((thuoc) => (
+                                        <div key={thuoc.id} className="goi-y-item" onClick={() => chonThuoc(thuoc)}>
+                                            <strong>{thuoc.ten}</strong>
+                                            {" — "}
+                                            {thuoc.gia.toLocaleString("vi-VN")}
+                                            đ/kg
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="khong-co-thuoc">Không tìm thấy thuốc</div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* THUỐC ĐANG CHỌN */}
+
+                    {thuocDangChon && (
+                        <div className="thuoc-dang-chon">
+                            <p>
+                                Đã chọn: <b>{thuocDangChon.ten}</b>
+                                {" — "}
+                                {thuocDangChon.gia.toLocaleString("vi-VN")}
+                                đ/kg
+                            </p>
+
+                            <p>
+                                📦 Tồn kho: <b>{thuocDangChon.tonKho}g</b>
+                            </p>
                         </div>
                     )}
+
+                    {/* SỐ LƯỢNG */}
+                    <div className="wrap_tim_ten_thuoc">
+                        <input
+                            className="input_chuan"
+                            type="text"
+                            placeholder="Nhập số lượng (gram) rồi nhấn Enter"
+                            value={soLuong ? Number(soLuong).toLocaleString("vi-VN") : ""}
+                            onChange={(e) => {
+                                const gram = e.target.value.replace(/\D/g, "");
+
+                                setSoLuong(gram);
+
+                                if (thuocDangChon && gram && Number(gram) > 0) {
+                                    const tien = (thuocDangChon.gia / 1000) * Number(gram);
+
+                                    setSoTienMua(Math.round(tien));
+                                } else {
+                                    setSoTienMua("");
+                                }
+                            }}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    themVaoDon();
+                                }
+                            }}
+                        />
+                        <span className="nhan_tenthuoc">Gram</span>
+                    </div>
+
+                    {/* SỐ TIỀN */}
+                    <div className="wrap_tim_ten_thuoc">
+                        <input
+                            type="text"
+                            className="input_chuan"
+                            placeholder="💵 Nhập số tiền khách mua (đ)"
+                            value={soTienMua ? Number(soTienMua).toLocaleString("vi-VN") : ""}
+                            onChange={(e) => {
+                                const tien = e.target.value.replace(/\D/g, "");
+
+                                setSoTienMua(tien);
+
+                                if (thuocDangChon && tien && Number(tien) > 0) {
+                                    const gram = (Number(tien) * 1000) / thuocDangChon.gia;
+
+                                    setSoLuong(Math.round(gram * 100) / 100);
+                                } else {
+                                    setSoLuong("");
+                                }
+                            }}
+                        />
+                        <span className="nhan_tenthuoc">Số tiền</span>
+                    </div>
                 </div>
 
-                {/* THUỐC ĐANG CHỌN */}
-
-                {thuocDangChon && (
-                    <div className="thuoc-dang-chon">
-                        <p>
-                            Đã chọn: <b>{thuocDangChon.ten}</b>
-                            {" — "}
-                            {thuocDangChon.gia.toLocaleString("vi-VN")}
-                            đ/kg
-                        </p>
-
-                        <p>
-                            📦 Tồn kho: <b>{thuocDangChon.tonKho}g</b>
-                        </p>
-                    </div>
-                )}
-
-                {/* SỐ LƯỢNG */}
-
-                <input
-                    type="number"
-                    placeholder="Nhập số lượng (gram) rồi nhấn Enter"
-                    value={soLuong}
-                    onChange={(e) => {
-                        const gram = e.target.value;
-
-                        setSoLuong(gram);
-
-                        if (thuocDangChon && gram && Number(gram) > 0) {
-                            const tien = (thuocDangChon.gia / 1000) * Number(gram);
-
-                            setSoTienMua(Math.round(tien));
-                        } else {
-                            setSoTienMua("");
-                        }
-                    }}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                            themVaoDon();
-                        }
-                    }}
-                />
-
-                {/* SỐ TIỀN */}
-
-                <input
-                    type="text"
-                    className="input-so-tien"
-                    placeholder="💵 Nhập số tiền khách mua (đ)"
-                    value={soTienMua ? Number(soTienMua).toLocaleString("vi-VN") : ""}
-                    onChange={(e) => {
-                        const tien = e.target.value.replace(/\D/g, "");
-
-                        setSoTienMua(tien);
-
-                        if (thuocDangChon && tien && Number(tien) > 0) {
-                            const gram = (Number(tien) * 1000) / thuocDangChon.gia;
-
-                            setSoLuong(Math.round(gram * 100) / 100);
-                        } else {
-                            setSoLuong("");
-                        }
-                    }}
-                />
-
-                <button onClick={themVaoDon}>➕ Thêm vào đơn</button>
-
-                <button onClick={() => setTrang("trangchu")}>← Quay lại trang chủ</button>
+                <div>
+                    <button className="button_banhang" onClick={themVaoDon}>
+                        ➕ Thêm vào đơn
+                    </button>
+                    <button className="button_banhang" onClick={() => setTrang("trangchu")}>
+                        ← Quay lại trang chủ
+                    </button>
+                </div>
             </div>
 
             {/* ===================== */}
             {/* CỘT PHẢI */}
             {/* ===================== */}
 
-            <div className="cot-phai">
+            <div className="cot-phai nen_trang">
                 <h2>🧾 DANH SÁCH THUỐC</h2>
 
                 {gioHang.length === 0 ? (
@@ -183,9 +200,12 @@ function BanHang({
 
                 <h2 className="tong-tien">Tổng tiền: {tongTien.toLocaleString("vi-VN")}đ</h2>
 
-                <button onClick={thanhToan}>💵 Thanh toán</button>
+                <button className="button_banhang" onClick={thanhToan}>
+                    💵 Thanh toán
+                </button>
 
                 <button
+                    className="button_banhang"
                     onClick={async () => {
                         await taiLichSuBanHang();
 

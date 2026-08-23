@@ -1,5 +1,5 @@
 import "./ToaThuoc.css";
-
+import InToaThuoc from "../InToaThuoc/InToaThuoc";
 function ToaThuoc({
     toaThuoc,
     setToaThuoc,
@@ -36,15 +36,26 @@ function ToaThuoc({
 
             <div className="toa-hang-ngang">
                 <input
-                    type="number"
-                    placeholder="Năm sinh"
+                    type="text"
+                    placeholder="Ngày sinh"
                     value={toaThuoc.nam_sinh}
-                    onChange={(e) =>
+                    maxLength={10}
+                    onChange={(e) => {
+                        let value = e.target.value.replace(/\D/g, "");
+
+                        if (value.length > 2) {
+                            value = value.slice(0, 2) + "/" + value.slice(2);
+                        }
+
+                        if (value.length > 5) {
+                            value = value.slice(0, 5) + "/" + value.slice(5, 9);
+                        }
+
                         setToaThuoc({
                             ...toaThuoc,
-                            nam_sinh: e.target.value,
-                        })
-                    }
+                            nam_sinh: value,
+                        });
+                    }}
                 />
 
                 <select
@@ -237,7 +248,7 @@ function ToaThuoc({
                 </button>
 
                 <button onClick={() => window.print()}>🖨️ In toa thuốc</button>
-
+                <InToaThuoc toaThuoc={toaThuoc} danhSachViThuoc={danhSachViThuoc} />
                 <button onClick={() => setTrang("trangchu")}>← Quay lại trang chủ</button>
             </div>
         </div>

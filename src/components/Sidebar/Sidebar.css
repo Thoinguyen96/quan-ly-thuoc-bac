@@ -7,8 +7,21 @@
     position: fixed;
     left: 0;
     top: 0;
-
-    background: linear-gradient(160deg, #00695c 0%, #008f7a 45%, #00a6c7 100%);
+    background: #2a9b39;
+    background: #2a9b39;
+    background: #2a9b39;
+    background: linear-gradient(
+        135deg,
+        #d0415e 0%,
+        #d0415e 20%,
+        #d65767 calc(20% + 1px),
+        #d65767 40%,
+        #db7971 calc(40% + 1px),
+        #db7971 60%,
+        #e0a57c calc(60% + 1px),
+        #e0a57c 80%,
+        #e6d886 calc(80% + 1px) 100%
+    );
 
     box-shadow: 5px 0 20px rgba(0, 60, 70, 0.25);
     z-index: 1000;
@@ -44,7 +57,7 @@
     margin-top: 4px;
 
     font-size: 13px;
-    color: #777;
+    color: #16ef09;
 }
 
 /* Menu */

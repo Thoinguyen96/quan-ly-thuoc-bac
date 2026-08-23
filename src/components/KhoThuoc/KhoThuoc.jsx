@@ -43,27 +43,41 @@ function KhoThuoc({
                 <h1>📦 KHO THUỐC</h1>
 
                 <h2>➕ Thêm thuốc mới</h2>
+                <div className="cang_ngang_kho_thuoc">
+                    <span>Tên Thuốc</span>
+                    <span>Đ/Kg</span>
+                    <span>Gram</span>
+                </div>
+                <div className="cang_ngang_kho_thuoc">
+                    <input
+                        className="input_chuan"
+                        type="text"
+                        placeholder="Tên thuốc"
+                        value={tenThuocMoi}
+                        onChange={(e) => setTenThuocMoi(e.target.value)}
+                    />
+                    <input
+                        className="input_chuan"
+                        type="text"
+                        placeholder="Giá bán (đ/kg)"
+                        value={giaThuocMoi ? Number(giaThuocMoi).toLocaleString("vi-VN") : ""}
+                        onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, "");
+                            setGiaThuocMoi(value);
+                        }}
+                    />
 
-                <input
-                    type="text"
-                    placeholder="Tên thuốc"
-                    value={tenThuocMoi}
-                    onChange={(e) => setTenThuocMoi(e.target.value)}
-                />
-
-                <input
-                    type="number"
-                    placeholder="Giá bán (đ/kg)"
-                    value={giaThuocMoi}
-                    onChange={(e) => setGiaThuocMoi(e.target.value)}
-                />
-
-                <input
-                    type="number"
-                    placeholder="Tồn kho (gram)"
-                    value={tonKhoMoi}
-                    onChange={(e) => setTonKhoMoi(e.target.value)}
-                />
+                    <input
+                        className="input_chuan"
+                        type="text"
+                        placeholder="Tồn kho (gram)"
+                        value={tonKhoMoi ? Number(tonKhoMoi).toLocaleString("vi-VN") : ""}
+                        onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, "");
+                            setTonKhoMoi(value);
+                        }}
+                    />
+                </div>
 
                 <button onClick={themThuocMoi}>➕ Thêm thuốc vào kho</button>
 
@@ -92,7 +106,7 @@ function KhoThuoc({
                     <div className="dong-kho tieu-de-kho">
                         <span>Tên thuốc</span>
                         <span>Giá/kg</span>
-                        <span>Tồn kho</span>
+                        <span>Tồn kho (g)</span>
                         <span>Thao tác</span>
                     </div>
 
@@ -107,17 +121,22 @@ function KhoThuoc({
                                     />
 
                                     <input
-                                        type="number"
-                                        value={giaThuocSua}
-                                        onChange={(e) => setGiaThuocSua(e.target.value)}
+                                        type="text"
+                                        value={giaThuocSua ? Number(giaThuocSua).toLocaleString("vi-VN") : ""}
+                                        onChange={(e) => {
+                                            const value = e.target.value.replace(/\D/g, "");
+                                            setGiaThuocSua(value);
+                                        }}
                                     />
 
                                     <input
-                                        type="number"
-                                        value={tonKhoSua}
-                                        onChange={(e) => setTonKhoSua(e.target.value)}
+                                        type="text"
+                                        value={tonKhoSua ? Number(tonKhoSua).toLocaleString("vi-VN") : ""}
+                                        onChange={(e) => {
+                                            const value = e.target.value.replace(/\D/g, "");
+                                            setTonKhoSua(value);
+                                        }}
                                     />
-
                                     <div className="kho-thao-tac">
                                         <button className="btn-luu-thuoc" onClick={luuSuaThuoc}>
                                             💾
