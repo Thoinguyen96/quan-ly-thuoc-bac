@@ -1,0 +1,326 @@
+/* ================================
+   GIAO DIỆN IN PHIẾU CHÂM CỨU
+================================ */
+
+.phieu-cham-cuu {
+    width: 650px;
+    max-width: 95%;
+    margin: 30px auto;
+    padding: 25px;
+    box-sizing: border-box;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* ================================
+   PHẦN ĐẦU
+================================ */
+
+.phieu-cham-cuu-header {
+    text-align: center;
+}
+
+.phieu-cham-cuu-header h2 {
+    margin: 0;
+    font-size: 25px;
+    font-weight: 800;
+}
+
+.phieu-cham-cuu-header p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.duong-ke {
+    width: 100%;
+    height: 1px;
+    margin: 18px 0;
+    background: #222;
+}
+
+.tieu-de-phieu {
+    margin: 0 0 25px;
+    text-align: center;
+    font-size: 25px;
+}
+
+/* ================================
+   CÀI ĐẶT IN
+================================ */
+
+.cai-dat-in {
+    margin-bottom: 15px;
+    padding: 18px;
+    border: 1px solid #dddddd;
+    border-radius: 12px;
+    background: #fafafa;
+}
+
+.cai-dat-tieu-de {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 16px;
+}
+
+.so-muc {
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #222;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.cai-dat-in select {
+    width: 100%;
+    height: 44px;
+    padding: 0 12px;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.so-luong-in {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.so-luong-in input {
+    width: 150px;
+    height: 44px;
+    padding: 0 12px;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* ================================
+   XEM TRƯỚC
+================================ */
+
+.xem-truoc-phieu {
+    margin-top: 25px;
+}
+
+.xem-truoc-header {
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Khung xem trước */
+
+.phieu-mini {
+    width: 50mm;
+    min-height: 80mm;
+    margin: 0 auto;
+    padding: 5mm;
+    box-sizing: border-box;
+
+    background: #fff;
+    border: 1px solid #bbb;
+
+    text-align: center;
+
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Header phiếu */
+
+.mini-header {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    font-size: 6px;
+    line-height: 1.25;
+}
+
+.mini-header strong {
+    font-size: 9px;
+}
+
+.mini-duong-ke {
+    width: 100%;
+    height: 0.5px;
+    margin: 5px 0;
+    background: #000;
+}
+
+.mini-tieu-de {
+    margin-top: 5px;
+    font-size: 9px;
+    font-weight: bold;
+}
+
+/* ================================
+   SỐ THỨ TỰ
+================================ */
+
+.mini-so-label {
+    margin-top: 8px;
+    font-size: 8px;
+    font-weight: bold;
+}
+
+.mini-so {
+    margin-top: 2px;
+
+    font-size: 75px;
+    line-height: 0.95;
+    font-weight: 900;
+}
+
+/* ================================
+   NGÀY GIỜ
+================================ */
+
+.mini-thoi-gian {
+    margin-top: 7px;
+
+    font-size: 7px;
+    line-height: 1.5;
+}
+
+/* ================================
+   HIỆU LỰC
+================================ */
+
+.mini-hieu-luc {
+    margin-top: 7px;
+    padding: 4px;
+
+    border: 0.5px solid #000;
+
+    font-size: 6px;
+    line-height: 1.4;
+    font-weight: bold;
+}
+
+/* ================================
+   NÚT IN
+================================ */
+
+.nut-in-phieu {
+    display: flex;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.btn-in-phieu {
+    min-width: 180px;
+    padding: 13px 25px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: #222;
+    color: #fff;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.btn-in-phieu:hover {
+    opacity: 0.85;
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 600px) {
+    .phieu-cham-cuu {
+        padding: 18px;
+        margin: 15px auto;
+    }
+
+    .tieu-de-phieu {
+        font-size: 21px;
+    }
+
+    .mini-so {
+        font-size: 65px;
+    }
+}
+/* ================================
+   CHẾ ĐỘ IN
+================================ */
+
+/* ================================
+   CHỈ DÙNG KHI IN
+================================ */
+/* ================================
+   CHẾ ĐỘ IN - IN ĐÚNG PHIẾU XEM TRƯỚC
+================================ */
+
+@media print {
+    @page {
+        size: 50mm 80mm;
+        margin: 0;
+    }
+
+    html,
+    body {
+        width: 50mm !important;
+        height: 80mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff !important;
+    }
+
+    /* Ẩn toàn bộ giao diện */
+    body * {
+        visibility: hidden !important;
+    }
+
+    /* Chỉ hiện phiếu xem trước */
+    .phieu-mini,
+    .phieu-mini * {
+        visibility: visible !important;
+    }
+
+    /* Phiếu in = chính phiếu xem trước */
+    .phieu-mini {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        box-shadow: none;
+        width: 50mm !important;
+        height: 80mm !important;
+        min-height: 80mm !important;
+
+        margin: 0 !important;
+        padding: 5mm !important;
+
+        box-sizing: border-box !important;
+
+        background: #fff !important;
+        border: 0.5px solid #000 !important;
+        text-align: center !important;
+    }
+}
+/* KHU VỰC PHIẾU CHỈ DÙNG ĐỂ IN */
+#khu-vuc-in {
+    display: none;
+}
+
+@media print {
+    #khu-vuc-in {
+        display: block !important;
+    }
+}

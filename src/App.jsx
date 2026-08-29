@@ -19,6 +19,7 @@ import ToaThuoc from "./components/ToaThuoc/ToaThuoc";
 import TaiKham from "./components/TaiKham/TaiKham";
 import DanhSachNhanVien from "./components/DanhSachNhanVien/DanhSachNhanVien";
 import DangNhap from "./components/DangNhap/DangNhap";
+import InPhieuChamCuu from "./components/InPhieuChamCuu/InPhieuChamCuu";
 function Header() {
     return (
         <div className="header-thoi-an">
@@ -1186,6 +1187,7 @@ function App() {
 
             <div className="desktop-content">
                 {trang === "trangchu" && <TrangChu user={user} setTrang={setTrang} />}
+                {trang === "inphieu" && <InPhieuChamCuu setTrang={setTrang} />}
                 {trang === "banhang" && (
                     <BanHang
                         tuKhoa={tuKhoa}

@@ -4,8 +4,18 @@ function InToaThuoc({ toaThuoc, danhSachViThuoc }) {
     return (
         <div className="phieu-in-toa">
             <div className="phieu-in-header">
-                <h1>📄 TOA THUỐC Y HỌC CỔ TRUYỀN</h1>
+                <h2>PHÒNG CHẨN TRỊ Y HỌC CỔ TRUYỀN</h2>
+                <h2 className="ten-phong-kham">AN THỜI ĐƯỜNG</h2>
+
+                <div className="dich-vu-phong-kham">Châm cứu – Xoa bóp – Bấm huyệt – Bốc thuốc</div>
+
+                <div className="dia-chi-phong-kham">
+                    Địa chỉ: ........................................................
+                </div>
+
+                <div className="sdt-phong-kham">SĐT: .............................................................</div>
             </div>
+            <h2>📄 TOA THUỐC Y HỌC CỔ TRUYỀN</h2>
 
             <h3>THÔNG TIN BỆNH NHÂN</h3>
 

@@ -9,7 +9,7 @@
     border-radius: 8px;
 }
 .danh-sach-nhan-vien {
-    width: 50%;
+    width: 90%;
     margin: 0 auto;
 }
 .popup-sua-nhan-vien {
@@ -20,4 +20,17 @@
     justify-content: center;
     display: flex;
     gap: 5px;
+}
+.wrap_dinh_vi {
+    position: relative; /* cha làm mốc */
+}
+.dinh_vi {
+    position: absolute; /* con bám theo cha */
+    left: 16px;
+    top: 10%;
+    transform: translateY(-50%);
+}
+.wrap_ten_nv {
+    display: flex;
+    justify-content: space-between;
 }

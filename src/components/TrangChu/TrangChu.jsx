@@ -1,6 +1,6 @@
 import "./TrangChu.css";
 
-function TrangChu({ user }) {
+function TrangChu({ user, setTrang }) {
     return (
         <div className="trang-chu">
             <div className="trang-chu-header">
@@ -13,7 +13,7 @@ function TrangChu({ user }) {
                     👋 Xin chào, <strong>{user?.ho_ten || "Bạn"}</strong>
                 </div>
             </div>
-
+            <button onClick={() => setTrang("inphieu")}>🖨️ In phiếu</button>
             <div className="trang-chu-noi-dung">
                 <div className="trang-chu-card">
                     <div className="card-icon">👥</div>

@@ -294,9 +294,9 @@ button:hover {
 }
 .ten-phong-kham {
     color: #f7df9b;
-    font-size: 32px;
+    font-size: 25px;
     font-weight: bold; /* 👈 Màu chữ ĐÔNG Y THỜI AN */
-    margin: 0;
+    margin: 10px 0;
 }
 
 .thuong-hieu h1 {

@@ -61,31 +61,38 @@ function DanhSachNhanVien({
             {nhanVienCanSua && (
                 <div className="popup-sua-nhan-vien">
                     <h2>✏️ Sửa tài khoản nhân viên</h2>
-
-                    <input
-                        className="input_chuan"
-                        type="text"
-                        placeholder="Tên đăng nhập"
-                        value={tenDangNhapSua}
-                        onChange={(e) => setTenDangNhapSua(e.target.value)}
-                    />
-
-                    <input
-                        className="input_chuan"
-                        type="text"
-                        placeholder="Họ tên nhân viên"
-                        value={hoTenSua}
-                        onChange={(e) => setHoTenSua(e.target.value)}
-                    />
-
-                    <input
-                        className="input_chuan"
-                        type="password"
-                        placeholder="Mật khẩu mới (để trống nếu không đổi)"
-                        value={matKhauSua}
-                        onChange={(e) => setMatKhauSua(e.target.value)}
-                    />
-
+                    <div className="wrap_ten_nv">
+                        <div className="wrap_dinh_vi">
+                            <input
+                                placeholder="Tên đăng nhập"
+                                className="input_chuan"
+                                type="text"
+                                value={tenDangNhapSua}
+                                onChange={(e) => setTenDangNhapSua(e.target.value)}
+                            />
+                            <span className="dinh_vi">Tên đăng nhập</span>
+                        </div>
+                        <div className="wrap_dinh_vi">
+                            <input
+                                className="input_chuan"
+                                type="text"
+                                placeholder="Họ tên nhân viên"
+                                value={hoTenSua}
+                                onChange={(e) => setHoTenSua(e.target.value)}
+                            />
+                            <span className="dinh_vi">Họ tên nhân viên</span>
+                        </div>
+                        <div className="wrap_dinh_vi">
+                            <input
+                                className="input_chuan"
+                                type="password"
+                                placeholder="Mật khẩu mới (để trống nếu không đổi)"
+                                value={matKhauSua}
+                                onChange={(e) => setMatKhauSua(e.target.value)}
+                            />
+                            <span className="dinh_vi">Mật khẩu mới</span>
+                        </div>
+                    </div>
                     <h3>Quyền nhân viên</h3>
 
                     <div className="quyen-nhan-vien">
