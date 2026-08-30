@@ -26,3 +26,36 @@
     top: 15%;
     transform: translateY(-50%);
 }
+.goi-y-thuoc {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    text-align: left;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.goi-y-item {
+    padding: 8px 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.goi-y-item:last-child {
+    border-bottom: none;
+}
+
+.goi-y-item:hover {
+    background: var(--mau-hover);
+}

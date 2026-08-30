@@ -1,5 +1,5 @@
 import "./BanHang.css";
-
+import DocSoTien from "../DocSoTien/DocSoTien";
 function BanHang({
     tuKhoa,
     setTuKhoa,
@@ -144,7 +144,7 @@ function BanHang({
                                 }
                             }}
                         />
-                        <span className="nhan_tenthuoc">Số tiền</span>
+                        <span className="nhan_tenthuoc">Số tiền (vnđ)</span>
                     </div>
                 </div>
 
@@ -200,6 +200,9 @@ function BanHang({
 
                 <h2 className="tong-tien">Tổng tiền: {tongTien.toLocaleString("vi-VN")}đ</h2>
 
+                <div className="tien-bang-chu">
+                    <DocSoTien soTien={tongTien} />
+                </div>
                 <button className="button_banhang" onClick={thanhToan}>
                     💵 Thanh toán
                 </button>

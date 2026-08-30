@@ -2,3 +2,21 @@
     display: flex;
     justify-content: space-around;
 }
+.dong-kho {
+    width: 100%;
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 2fr 1.5fr 1.5fr 1fr;
+    gap: 20px;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    align-items: center;
+    border: 1px solid transparent;
+    transition: all 0.15s ease;
+}
+.dong-kho:not(.tieu-de-kho):hover {
+    background: var(--mau-hover);
+    border: 1px solid var(--vien-hover);
+    cursor: pointer;
+}

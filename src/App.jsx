@@ -20,6 +20,7 @@ import TaiKham from "./components/TaiKham/TaiKham";
 import DanhSachNhanVien from "./components/DanhSachNhanVien/DanhSachNhanVien";
 import DangNhap from "./components/DangNhap/DangNhap";
 import InPhieuChamCuu from "./components/InPhieuChamCuu/InPhieuChamCuu";
+import DocSoTien from "./components/DocSoTien/DocSoTien";
 function Header() {
     return (
         <div className="header-thoi-an">
@@ -1100,15 +1101,19 @@ function App() {
                                 <p>🕒 {new Date(don.created_at).toLocaleString("vi-VN")}</p>
 
                                 {don.chi_tiet?.map((thuoc, index) => (
-                                    <div key={index}>
+                                    <div className="chi-tiet-thuoc">
                                         <strong>{thuoc.ten}</strong>
-                                        {" — "}
-                                        {thuoc.soLuong}g{" — "}
-                                        {Number(thuoc.thanhTien).toLocaleString("vi-VN")}đ
+                                        <span>{thuoc.soLuong}g</span>
+                                        <span>{Number(thuoc.thanhTien).toLocaleString("vi-VN")} vnđ</span>
                                     </div>
                                 ))}
+                                <h3>Tổng tiền: {Math.round(Number(don.tong_tien)).toLocaleString("vi-VN")} vnđ</h3>
 
-                                <h3>Tổng tiền: {Number(don.tong_tien).toLocaleString("vi-VN")}đ</h3>
+                                <div className="tien-bang-chu">
+                                    <DocSoTien soTien={don.tong_tien} />
+                                </div>
+                                <hr />
+                                <hr />
                                 <hr />
                             </div>
                         ))

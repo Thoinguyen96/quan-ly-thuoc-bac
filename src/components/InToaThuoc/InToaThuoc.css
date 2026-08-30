@@ -109,18 +109,31 @@
     margin-top: 8px;
     margin-bottom: 15px;
 }
-
 .dong-thuoc {
-    display: flex;
-    justify-content: space-between;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.5fr 1.5fr 45px;
     align-items: center;
 
-    padding: 6px 4px;
+    padding: 8px 4px;
+    box-sizing: border-box;
 
     border-bottom: 1px solid #ddd;
 
     font-size: 13px;
     line-height: 1.4;
+}
+
+.dong-thuoc > * {
+    text-align: center;
+}
+
+.dong-thuoc strong:first-child {
+    text-align: left;
+}
+
+.btn-xoa-nho {
+    justify-self: center;
 }
 
 .dong-thuoc span:first-child {
