@@ -248,9 +248,9 @@ function ToaThuoc({
                 </button>
 
                 <button onClick={() => window.print()}>🖨️ In toa thuốc</button>
-                <InToaThuoc toaThuoc={toaThuoc} danhSachViThuoc={danhSachViThuoc} />
                 <button onClick={() => setTrang("trangchu")}>← Quay lại trang chủ</button>
             </div>
+            <InToaThuoc toaThuoc={toaThuoc} danhSachViThuoc={danhSachViThuoc} />
         </div>
     );
 }

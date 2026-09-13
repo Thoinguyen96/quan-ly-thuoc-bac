@@ -2,7 +2,7 @@ import "./DangNhap.css";
 
 function DangNhap({ tenDangNhap, setTenDangNhap, matKhau, setMatKhau, dangNhap, guiEmailDoiMatKhau }) {
     return (
-        <div>
+        <div className="trang-dang-nhap">
             <div className="wrap_dangnhap">
                 <h1>🔐 ĐĂNG NHẬP</h1>
 

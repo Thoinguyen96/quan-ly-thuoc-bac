@@ -1,6 +1,6 @@
 import "./InPhieuChamCuu.css";
 import { useState } from "react";
-
+import { createPortal } from "react-dom";
 function InPhieuChamCuu() {
     const [khoGiay, setKhoGiay] = useState("50x80");
     const [soLuong, setSoLuong] = useState(1);
@@ -111,11 +111,8 @@ function InPhieuChamCuu() {
 
                 <p>Khám bệnh – Châm cứu – Bốc thuốc</p>
             </div>
-
             <div className="duong-ke"></div>
-
             <h1 className="tieu-de-phieu">PHIẾU CHÂM CỨU</h1>
-
             {/* 1. KHỔ GIẤY */}
             <div className="cai-dat-in">
                 <div className="cai-dat-tieu-de">
@@ -131,7 +128,6 @@ function InPhieuChamCuu() {
                     <option value="custom">Tùy chỉnh</option>
                 </select>
             </div>
-
             {/* 2. SỐ LƯỢNG */}
             <div className="cai-dat-in">
                 <div className="cai-dat-tieu-de">
@@ -149,7 +145,6 @@ function InPhieuChamCuu() {
                     <span>phiếu</span>
                 </div>
             </div>
-
             {/* 3. LOẠI PHIẾU */}
             <div className="cai-dat-in">
                 <div className="cai-dat-tieu-de">
@@ -163,7 +158,6 @@ function InPhieuChamCuu() {
                     <option value="kham-benh">Phiếu khám bệnh</option>
                 </select>
             </div>
-
             {/* XEM TRƯỚC */}
             <div className="xem-truoc-phieu">
                 <div className="xem-truoc-header">
@@ -196,8 +190,7 @@ function InPhieuChamCuu() {
                     </div>
                 </div>
             </div>
-            <div id="khu-vuc-in"></div>
-            {/* NÚT */}
+            {createPortal(<div id="khu-vuc-in"></div>, document.body)} {/* NÚT */}
             <div className="nut-in-phieu">
                 <button className="btn-in-phieu" onClick={inPhieu}>
                     🖨️ In phiếu

@@ -12,3 +12,8 @@ createRoot(document.getElementById("root")).render(
         <ToastContainer position="top-right" autoClose={2000} style={{ top: "120px" }} />
     </StrictMode>,
 );
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+        navigator.serviceWorker.register("/sw.js");
+    });
+}
