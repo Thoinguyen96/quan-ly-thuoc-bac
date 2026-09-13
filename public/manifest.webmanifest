@@ -10,8 +10,8 @@
     "icons": [
         {
             "src": "/favicon.ico",
-            "sizes": "any",
-            "type": "image/svg+xml"
+            "sizes": "256x256",
+            "type": "image/x-icon"
         }
     ]
 }
