@@ -9,7 +9,7 @@
     "orientation": "landscape",
     "icons": [
         {
-            "src": "/favicon.svg",
+            "src": "/favicon.ico",
             "sizes": "any",
             "type": "image/svg+xml"
         }
