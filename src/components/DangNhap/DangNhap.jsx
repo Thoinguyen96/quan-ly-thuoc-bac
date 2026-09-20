@@ -3,6 +3,10 @@ import "./DangNhap.css";
 function DangNhap({ tenDangNhap, setTenDangNhap, matKhau, setMatKhau, dangNhap, guiEmailDoiMatKhau }) {
     return (
         <div className="trang-dang-nhap">
+            <div className="wrap_header_dang_nhap">
+                <h1>🌿 AN THỜI ĐƯỜNG</h1>
+                <p>Phòng Chẩn Trị Y Học Cổ Truyền</p>
+            </div>
             <div className="wrap_dangnhap">
                 <h1>🔐 ĐĂNG NHẬP</h1>
 

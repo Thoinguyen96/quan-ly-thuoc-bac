@@ -29,7 +29,11 @@
         #e0a57c 80%,
         #e6d886 calc(80% + 1px) 100%
     );
-    display: flex;
-    justify-content: center;
+    /* display: flex;
+    justify-content: center; */
     align-items: center;
+}
+.wrap_header_dang_nhap {
+    text-align: center;
+    margin-bottom: 20px;
 }
