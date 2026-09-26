@@ -20,6 +20,18 @@ function BanHang({
     taiLichSuBanHang,
     setTrang,
 }) {
+    const xuLyChonThuoc = (thuoc) => {
+        chonThuoc(thuoc);
+
+        // Nếu đã có số gram thì tính lại tiền theo thuốc mới
+        if (soLuong && Number(soLuong) > 0) {
+            const tienMoi = (thuoc.gia / 1000) * Number(soLuong);
+            setSoTienMua(Math.round(tienMoi));
+        } else {
+            setSoTienMua("");
+        }
+    };
+
     return (
         <div className="ban-hang-layout">
             {/* ===================== */}
@@ -46,10 +58,11 @@ function BanHang({
                                 onChange={(e) => {
                                     setTuKhoa(e.target.value);
                                     setThuocDangChon(null);
+                                    setSoTienMua("");
                                 }}
                                 onKeyDown={(e) => {
                                     if (e.key === "Enter" && thuocGoiY.length > 0) {
-                                        chonThuoc(thuocGoiY[0]);
+                                        xuLyChonThuoc(thuocGoiY[0]);
                                     }
                                 }}
                             />
@@ -63,7 +76,7 @@ function BanHang({
                             <div className="goi-y-thuoc">
                                 {thuocGoiY.length > 0 ? (
                                     thuocGoiY.map((thuoc) => (
-                                        <div key={thuoc.id} className="goi-y-item" onClick={() => chonThuoc(thuoc)}>
+                                        <div key={thuoc.id} className="goi-y-item" onClick={() => xuLyChonThuoc(thuoc)}>
                                             <strong>{thuoc.ten}</strong>
                                             {" — "}
                                             {thuoc.gia.toLocaleString("vi-VN")}
